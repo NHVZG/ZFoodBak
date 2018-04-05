@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nhvzg.dao.CouponMapper" >
+  <resultMap id="BaseResultMap" type="com.nhvzg.entity.Coupon" >
+    <id column="coupon_id" property="couponId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="startTime" property="starttime" jdbcType="VARCHAR" />
+    <result column="endTime" property="endtime" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="DOUBLE" />
+    <result column="percent" property="percent" jdbcType="INTEGER" />
+    <result column="usage" property="usage" jdbcType="INTEGER" />
+    <result column="condition" property="condition" jdbcType="VARCHAR" />
+    <result column="extra" property="extra" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    coupon_id, shop_id, `name`, detail, startTime, endTime, discount, percent, `usage`, `condition`,
+    extra
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from coupon
+    where coupon_id = #{couponId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from coupon
+    where coupon_id = #{couponId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nhvzg.entity.Coupon" >
+    insert into coupon (coupon_id, shop_id, `name`,
+      detail, startTime, endTime, 
+      discount, percent, `usage`,
+      `condition`, extra)
+    values (#{couponId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{starttime,jdbcType=VARCHAR}, #{endtime,jdbcType=VARCHAR}, 
+      #{discount,jdbcType=DOUBLE}, #{percent,jdbcType=INTEGER}, #{usage,jdbcType=INTEGER}, 
+      #{condition,jdbcType=VARCHAR}, #{extra,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhvzg.entity.Coupon" >
+    insert into coupon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="endtime != null" >
+        endTime,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="percent != null" >
+        percent,
+      </if>
+      <if test="usage != null" >
+        `usage`,
+      </if>
+      <if test="condition != null" >
+        `condition`,
+      </if>
+      <if test="extra != null" >
+        extra,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="couponId != null" >
+        #{couponId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=DOUBLE},
+      </if>
+      <if test="percent != null" >
+        #{percent,jdbcType=INTEGER},
+      </if>
+      <if test="usage != null" >
+        #{usage,jdbcType=INTEGER},
+      </if>
+      <if test="condition != null" >
+        #{condition,jdbcType=VARCHAR},
+      </if>
+      <if test="extra != null" >
+        #{extra,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.Coupon" >
+    update coupon
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=DOUBLE},
+      </if>
+      <if test="percent != null" >
+        percent = #{percent,jdbcType=INTEGER},
+      </if>
+      <if test="usage != null" >
+        `usage` = #{usage,jdbcType=INTEGER},
+      </if>
+      <if test="condition != null" >
+        `condition` = #{condition,jdbcType=VARCHAR},
+      </if>
+      <if test="extra != null" >
+        extra = #{extra,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where coupon_id = #{couponId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.Coupon" >
+    update coupon
+    set shop_id = #{shopId,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=VARCHAR},
+      endTime = #{endtime,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=DOUBLE},
+      percent = #{percent,jdbcType=INTEGER},
+      `usage` = #{usage,jdbcType=INTEGER},
+      `condition` = #{condition,jdbcType=VARCHAR},
+      extra = #{extra,jdbcType=VARCHAR}
+    where coupon_id = #{couponId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getCountByShopId" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(coupon_id) from coupon where shop_id=#{shopId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getShopCoupon" resultMap="BaseResultMap">
+    select * from coupon where  shop_id=#{shopId,jdbcType=VARCHAR}
+  </select>
+
+  <resultMap id="CouponMsg" type="com.nhvzg.result.ShopCouponMsg">
+    <result column="coupon_id" property="couponId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="startTime" property="starttime" jdbcType="VARCHAR" />
+    <result column="endTime" property="endtime" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="DOUBLE" />
+    <result column="percent" property="percent" jdbcType="INTEGER" />
+    <result column="usage" property="usage" jdbcType="INTEGER" />
+    <result column="condition" property="condition" jdbcType="VARCHAR" />
+    <result column="extra" property="extra" jdbcType="VARCHAR" />
+    <result column="foodName" property="foodName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getShopCouponMsg" resultMap="CouponMsg">
+      select c.*,f.name as foodName from coupon c left join food f on  c.extra=f.food_id where c.shop_id=#{shopId,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateCouponList" parameterType="java.util.List">
+    update coupon
+    <trim prefix="set" suffixOverrides=",">
+        <trim prefix="`name`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.name!=null">when coupon_id=#{i.couponId} then #{i.name}</if>
+            </foreach>
+        </trim>
+        <trim prefix="`detail`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.name!=null">when coupon_id=#{i.couponId} then #{i.detail}</if>
+            </foreach>
+        </trim>
+        <trim prefix="`startTime`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.starttime!=null">when coupon_id=#{i.couponId} then #{i.starttime}</if>
+            </foreach>
+        </trim>
+        <trim prefix="`endTime`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.endtime!=null">when coupon_id=#{i.couponId} then #{i.endtime}</if>
+            </foreach>
+        </trim>
+        <trim prefix="`discount`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.discount!=null">when coupon_id=#{i.couponId} then #{i.discount}</if>
+            </foreach>
+        </trim>
+        <trim prefix="`percent`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.percent!=null">when coupon_id=#{i.couponId} then #{i.percent}</if>
+            </foreach>
+        </trim>
+        <trim prefix="`usage`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.usage!=null">when coupon_id=#{i.couponId} then #{i.usage}</if>
+            </foreach>
+        </trim>
+        <trim prefix="`condition`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.condition!=null">when coupon_id=#{i.couponId} then #{i.condition}</if>
+            </foreach>
+        </trim>
+        <trim prefix="`extra`= case" suffix="end">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.extra!=null">when coupon_id=#{i.couponId} then #{i.extra}</if>
+            </foreach>
+        </trim>
+    </trim>
+      where
+      <foreach collection="list" separator="or" item="item" index="index" >
+          coupon_id=#{item.couponId}
+      </foreach>
+  </update>
+
+    <insert id="insertCouponList" parameterType="java.util.List">
+        insert into coupon (`coupon_id`,`shop_id`,`name`,`detail`,`startTime`,`endTime`,`discount`,`percent`,`usage`,`condition`,`extra`) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.couponId,jdbcType=VARCHAR},
+              #{item.shopId,jdbcType=VARCHAR},
+              #{item.name,jdbcType=VARCHAR},
+              #{item.detail,jdbcType=VARCHAR},
+              #{item.starttime,jdbcType=VARCHAR},
+              #{item.endtime,jdbcType=VARCHAR},
+              #{item.discount,jdbcType=DOUBLE},
+              #{item.percent,jdbcType=INTEGER},
+              #{item.usage,jdbcType=INTEGER},
+              #{item.condition,jdbcType=VARCHAR},
+              #{item.extra,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteCouponList" parameterType="java.util.List">
+        delete from coupon where coupon_id in
+        <foreach item="item" collection="list" index="index" open="(" separator="," close=")">
+            #{item.couponId}
+        </foreach>
+    </delete>
+</mapper>

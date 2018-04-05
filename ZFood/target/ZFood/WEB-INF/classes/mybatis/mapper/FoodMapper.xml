@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nhvzg.dao.FoodMapper" >
+  <resultMap id="BaseResultMap" type="com.nhvzg.entity.Food" >
+    <id column="food_id" property="foodId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="sendPrice" property="sendprice" jdbcType="DOUBLE" />
+    <result column="packPrice" property="packprice" jdbcType="DOUBLE" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="kind" property="kind" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    food_id, shop_id, `name`, price, sendPrice, packPrice, score, pic, kind
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from food
+    where food_id = #{foodId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from food
+    where food_id = #{foodId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nhvzg.entity.Food" >
+    insert into food (food_id, shop_id, `name`,
+      price, sendPrice, packPrice, 
+      score, pic, kind)
+    values (#{foodId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{sendprice,jdbcType=DOUBLE}, #{packprice,jdbcType=DOUBLE}, 
+      #{score,jdbcType=INTEGER}, #{pic,jdbcType=VARCHAR}, #{kind,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhvzg.entity.Food" >
+    insert into food
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="foodId != null" >
+        food_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="sendprice != null" >
+        sendPrice,
+      </if>
+      <if test="packprice != null" >
+        packPrice,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="pic != null" >
+        pic,
+      </if>
+      <if test="kind != null" >
+        kind,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="foodId != null" >
+        #{foodId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="sendprice != null" >
+        #{sendprice,jdbcType=DOUBLE},
+      </if>
+      <if test="packprice != null" >
+        #{packprice,jdbcType=DOUBLE},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null" >
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="kind != null" >
+        #{kind,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.Food" >
+    update food
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="sendprice != null" >
+        sendPrice = #{sendprice,jdbcType=DOUBLE},
+      </if>
+      <if test="packprice != null" >
+        packPrice = #{packprice,jdbcType=DOUBLE},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null" >
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="kind != null" >
+        kind = #{kind,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where food_id = #{foodId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.Food" >
+    update food
+    set shop_id = #{shopId,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      sendPrice = #{sendprice,jdbcType=DOUBLE},
+      packPrice = #{packprice,jdbcType=DOUBLE},
+      score = #{score,jdbcType=INTEGER},
+      pic = #{pic,jdbcType=VARCHAR},
+      kind = #{kind,jdbcType=VARCHAR}
+    where food_id = #{foodId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getFoodByShopId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from food
+    where shop_id=#{shopId,jdbcType=VARCHAR}
+  </select>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from food
+  </select>
+
+<!--<resultMap id="ShopFoodCount" type="java.lang.Integer">
+  <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+</resultMap>-->
+
+  <select id="getCountByShopId" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(shop_id) from food where shop_id=#{shopId,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteList" parameterType="java.util.List">
+    delete from food where food_id in
+    <foreach item="item" collection="list" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <update id="updateList" parameterType="java.util.List">
+    update food
+    <trim prefix="set" suffixOverrides=","><!--后缀覆盖end后的逗号-->
+
+      <trim prefix="`name`= case" suffix="end,">
+        <foreach collection="list" item="i" index="index">
+          <if test="i.name!=null">when food_id=#{i.foodId} then #{i.name}</if>
+        </foreach>
+      </trim>
+
+        <trim prefix="`price`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.price!=null">when food_id=#{i.foodId} then #{i.price}</if>
+            </foreach>
+        </trim>
+
+        <trim prefix="`sendPrice`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.sendprice!=null">when food_id=#{i.foodId} then #{i.sendprice}</if>
+            </foreach>
+        </trim>
+
+        <trim prefix="`packPrice`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.packprice!=null">when food_id=#{i.foodId} then #{i.packprice}</if>
+            </foreach>
+        </trim>
+
+        <trim prefix="`pic`= case" suffix="end,">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.pic!=null">when food_id=#{i.foodId} then #{i.pic}</if>
+            </foreach>
+        </trim>
+
+        <trim prefix="`kind`= case" suffix="end">
+            <foreach collection="list" item="i" index="index">
+                <if test="i.kind!=null">when food_id=#{i.foodId} then #{i.kind}</if>
+            </foreach>
+        </trim>
+
+    </trim>
+      where
+      <foreach collection="list" separator="or" item="item" index="index" >
+          food_id=#{item.foodId}
+      </foreach>
+  </update>
+
+  <resultMap id="ShortFoodMsg" type="com.nhvzg.result.FoodShortMsg">
+    <result column="food_id" property="foodId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="sendPrice" property="sendprice" jdbcType="DOUBLE" />
+    <result column="packPrice" property="packprice" jdbcType="DOUBLE" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getAllFoodShortMsg" resultMap="ShortFoodMsg">
+    select * from food where shop_id=#{shopId,jdbcType=VARCHAR}
+  </select>
+</mapper>
+<!--<foreach collection="list" item="item" index="index" separator=" " open="case food_id" close="end">
+        when #{item.foodId} then #{item.name}</foreach>-->

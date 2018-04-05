@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nhvzg.dao.FavShopMapper" >
+  <resultMap id="BaseResultMap" type="com.nhvzg.entity.FavShop" >
+    <id column="fav_shop_id" property="favShopId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    fav_shop_id, user_id, shop_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from favshop
+    where fav_shop_id = #{favShopId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from favshop
+    where fav_shop_id = #{favShopId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nhvzg.entity.FavShop" >
+    insert into favshop (fav_shop_id, user_id, shop_id
+      )
+    values (#{favShopId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhvzg.entity.FavShop" >
+    insert into favshop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="favShopId != null" >
+        fav_shop_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="favShopId != null" >
+        #{favShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.FavShop" >
+    update favshop
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fav_shop_id = #{favShopId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.FavShop" >
+    update favshop
+    set user_id = #{userId,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=VARCHAR}
+    where fav_shop_id = #{favShopId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from favshop
+  </select>
+
+  <insert id="addList" parameterType="java.util.List">
+      insert into favshop (fav_shop_id, user_id, shop_id)
+      values 
+      <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.favShopId,jdbcType=VARCHAR},#{item.userId,jdbcType=VARCHAR},#{item.shopId,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+
+  <resultMap id="FavShopMsg" type="com.nhvzg.result.FavShopMsg">
+    <result column="fav_shop_id" property="favShopId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="shopName" property="favShopName" jdbcType="VARCHAR" />
+    <result column="headPic" property="shopPic" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getFavShop" resultMap="FavShopMsg" parameterType="java.lang.String">
+    SELECT fs.*,s.shopName,s.headPic FROM favshop fs INNER JOIN shop s on fs.shop_id=s.shop_id where fs.user_id=#{userId,jdbcType=VARCHAR};
+  </select>
+</mapper>

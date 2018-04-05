@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nhvzg.dao.ShopMapper">
+  <resultMap id="BaseResultMap" type="com.nhvzg.entity.Shop">
+    <id column="shop_id" jdbcType="VARCHAR" property="shopId" />
+    <result column="shopName" jdbcType="VARCHAR" property="shopname" />
+    <result column="income" jdbcType="DOUBLE" property="income" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="headPic" jdbcType="VARCHAR" property="headpic" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    shop_id, shopName, income, phone, address, score, user_id, headPic
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shop
+    where shop_id = #{shopId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shop
+    where shop_id = #{shopId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nhvzg.entity.Shop">
+    insert into shop (shop_id, shopName, income, 
+      phone, address, score, 
+      user_id, headPic)
+    values (#{shopId,jdbcType=VARCHAR}, #{shopname,jdbcType=VARCHAR}, #{income,jdbcType=DOUBLE}, 
+      #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
+      #{userId,jdbcType=VARCHAR}, #{headpic,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhvzg.entity.Shop">
+    insert into shop
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="shopname != null">
+        shopName,
+      </if>
+      <if test="income != null">
+        income,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="headpic != null">
+        headPic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shopId != null">
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopname != null">
+        #{shopname,jdbcType=VARCHAR},
+      </if>
+      <if test="income != null">
+        #{income,jdbcType=DOUBLE},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="headpic != null">
+        #{headpic,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.Shop">
+    update shop
+    <set>
+      <if test="shopname != null">
+        shopName = #{shopname,jdbcType=VARCHAR},
+      </if>
+      <if test="income != null">
+        income = #{income,jdbcType=DOUBLE},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="headpic != null">
+        headPic = #{headpic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where shop_id = #{shopId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.Shop">
+    update shop
+    set shopName = #{shopname,jdbcType=VARCHAR},
+      income = #{income,jdbcType=DOUBLE},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      headPic = #{headpic,jdbcType=VARCHAR}
+    where shop_id = #{shopId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getShopByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shop
+    where shopName = #{shopname,jdbcType=VARCHAR}
+  </select>
+
+
+  <resultMap id="ShopUserMsg" type="com.nhvzg.result.ShopUserMsg">
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="headPic" property="headImg" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="income" property="income" jdbcType="DOUBLE" />
+  </resultMap>
+
+
+  <select id="getShopByUser" parameterType="java.lang.String" resultMap="ShopUserMsg">
+    select s.*,u.`name` as userName
+        from zfooduser u inner join shop s on u.user_id=s.user_id where u.user_id= #{userId,jdbcType=VARCHAR};
+  </select>
+
+  <update id="updateHeadImg" parameterType="com.nhvzg.entity.Shop">
+     update shop
+    set `headpic` =#{headpic,jdbcType=VARCHAR}
+    where shop_id=#{shopId,jdbcType=VARCHAR}
+  </update>
+</mapper>

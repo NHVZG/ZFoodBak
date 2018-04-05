@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nhvzg.dao.CommentMapper">
+
+  <resultMap id="BaseResultMap" type="com.nhvzg.entity.Comment">
+    <id column="comment_id" jdbcType="VARCHAR" property="commentId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="food_id" jdbcType="VARCHAR" property="foodId" />
+    <result column="source" jdbcType="INTEGER" property="source" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_id, user_id, food_id, source, comment
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from comment
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nhvzg.entity.Comment">
+    insert into comment (comment_id, user_id, food_id, 
+      source, comment)
+    values (#{commentId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{foodId,jdbcType=VARCHAR}, 
+      #{source,jdbcType=INTEGER}, #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhvzg.entity.Comment">
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="foodId != null">
+        food_id,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        #{commentId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="foodId != null">
+        #{foodId,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.Comment">
+    update comment
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="foodId != null">
+        food_id = #{foodId,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.Comment">
+    update comment
+    set user_id = #{userId,jdbcType=VARCHAR},
+      food_id = #{foodId,jdbcType=VARCHAR},
+      source = #{source,jdbcType=INTEGER},
+      comment = #{comment,jdbcType=VARCHAR}
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getCommentByFood" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select * from comment
+      where food_id = #{foodId,jdbcType=VARCHAR}
+  </select>
+</mapper>

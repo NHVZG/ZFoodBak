@@ -1,0 +1,32 @@
+package com.nhvzg.dao;
+
+import com.nhvzg.entity.Food;
+import com.nhvzg.result.FoodShortMsg;
+
+import java.util.List;
+
+public interface FoodMapper {
+    int deleteByPrimaryKey(String foodId);
+
+    int insert(Food record);
+
+    int insertSelective(Food record);
+
+    Food selectByPrimaryKey(String foodId);
+
+    int updateByPrimaryKeySelective(Food record);
+
+    int updateByPrimaryKey(Food record);
+
+    List<Food> getFoodByShopId(String shopId);
+
+    List<Food>getAll();
+
+    int getCountByShopId(String shopId);
+
+    int deleteList(List list);
+
+    int updateList(List list);
+
+    List<FoodShortMsg>getAllFoodShortMsg(String shopId);
+}

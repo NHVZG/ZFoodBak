@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nhvzg.dao.CouponItemMapper" >
+  <resultMap id="BaseResultMap" type="com.nhvzg.entity.CouponItem" >
+    <id column="coupon_item_id" property="couponItemId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponid" jdbcType="VARCHAR" />
+    <result column="startTime" property="starttime" jdbcType="VARCHAR" />
+    <result column="endTime" property="endtime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    coupon_item_id, state, user_id, couponId, startTime, endTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from couponitem
+    where coupon_item_id = #{couponItemId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from couponitem
+    where coupon_item_id = #{couponItemId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nhvzg.entity.CouponItem" >
+    insert into couponitem (coupon_item_id, state, user_id, 
+      couponId, startTime, endTime
+      )
+    values (#{couponItemId,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{couponid,jdbcType=VARCHAR}, #{starttime,jdbcType=VARCHAR}, #{endtime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhvzg.entity.CouponItem" >
+    insert into couponitem
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="couponItemId != null" >
+        coupon_item_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="couponid != null" >
+        couponId,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="endtime != null" >
+        endTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="couponItemId != null" >
+        #{couponItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponid != null" >
+        #{couponid,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.CouponItem" >
+    update couponitem
+    <set >
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="couponid != null" >
+        couponId = #{couponid,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where coupon_item_id = #{couponItemId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.CouponItem" >
+    update couponitem
+    set state = #{state,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      couponId = #{couponid,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=VARCHAR},
+      endTime = #{endtime,jdbcType=VARCHAR}
+    where coupon_item_id = #{couponItemId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from couponitem
+  </select>
+
+  <select id="getUserCoupon" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+     from couponitem
+    where user_id = #{uid,jdbcType=VARCHAR}
+  </select>
+
+  <resultMap id="couponMsg" type="com.nhvzg.result.UserCouponMsg">
+    <result column="coupon_item_id" property="couponItemId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponId" jdbcType="VARCHAR" />
+    <result column="startTime" property="startTime" jdbcType="VARCHAR" />
+    <result column="endTime" property="endTime" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="DOUBLE" />
+    <result column="percent" property="percent" jdbcType="INTEGER" />
+    <result column="usage" property="usage" jdbcType="INTEGER" />
+    <result column="condition" property="condition" jdbcType="VARCHAR" />
+    <result column="extra" property="extra" jdbcType="VARCHAR" />
+    <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+    <result column="foodName" property="foodName" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <select id="getCouponsByUser" resultMap="couponMsg" parameterType="java.lang.String">
+    select cics.*,f.`name` as foodName from(
+SELECT cic.*,s.shopName FROM
+(SELECT ci.*,c.shop_id,c.`name`,c.detail,c.discount,c.percent,c.`usage`,c.`condition`,c.extra FROM couponitem ci INNER JOIN coupon c on ci.couponId=c.coupon_id)
+cic
+INNER JOIN shop s on cic.shop_id=s.shop_id
+where cic.user_id=#{userId,jdbcType=VARCHAR})cics left JOIN food f on f.food_id=cics.extra
+ORDER BY state desc,endTime asc;
+  </select>
+</mapper>

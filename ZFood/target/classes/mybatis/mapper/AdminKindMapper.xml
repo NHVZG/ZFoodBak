@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nhvzg.dao.AdminKindMapper" >
+  <resultMap id="BaseResultMap" type="com.nhvzg.entity.AdminKind" >
+    <id column="kind_id" property="kindId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="kind" property="kind" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    kind_id, name, kind
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from adminkind
+    where kind_id = #{kindId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from adminkind
+    where kind_id = #{kindId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nhvzg.entity.AdminKind" >
+    insert into adminkind (kind_id, name, kind
+      )
+    values (#{kindId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{kind,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhvzg.entity.AdminKind" >
+    insert into adminkind
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="kindId != null" >
+        kind_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="kind != null" >
+        kind,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="kindId != null" >
+        #{kindId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="kind != null" >
+        #{kind,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.AdminKind" >
+    update adminkind
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="kind != null" >
+        kind = #{kind,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where kind_id = #{kindId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.AdminKind" >
+    update adminkind
+    set name = #{name,jdbcType=VARCHAR},
+      kind = #{kind,jdbcType=VARCHAR}
+    where kind_id = #{kindId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from adminkind
+  </select>
+</mapper>

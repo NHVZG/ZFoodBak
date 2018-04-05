@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nhvzg.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.nhvzg.entity.Order" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="orderTime" property="ordertime" jdbcType="VARCHAR" />
+    <result column="receiverName" property="receivername" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="courier_id" property="courierId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, shop_id, user_id, price, orderTime, receiverName, address, phone, remark, 
+    courier_id, state, score
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from `order`
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from `order`
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nhvzg.entity.Order" >
+    insert into `order` (order_id, shop_id, user_id,
+      price, orderTime, receiverName, 
+      address, phone, remark, 
+      courier_id, state, score
+      )
+    values (#{orderId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{ordertime,jdbcType=VARCHAR}, #{receivername,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{courierId,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nhvzg.entity.Order" >
+    insert into `order`
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="ordertime != null" >
+        orderTime,
+      </if>
+      <if test="receivername != null" >
+        receiverName,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="courierId != null" >
+        courier_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="ordertime != null" >
+        #{ordertime,jdbcType=VARCHAR},
+      </if>
+      <if test="receivername != null" >
+        #{receivername,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="courierId != null" >
+        #{courierId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.Order" >
+    update `order`
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="ordertime != null" >
+        orderTime = #{ordertime,jdbcType=VARCHAR},
+      </if>
+      <if test="receivername != null" >
+        receiverName = #{receivername,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="courierId != null" >
+        courier_id = #{courierId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.Order" >
+    update `order`
+    set shop_id = #{shopId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      orderTime = #{ordertime,jdbcType=VARCHAR},
+      receiverName = #{receivername,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      courier_id = #{courierId,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getOrderByUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from `order`
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+
+  <resultMap id="OrderMsg" type="com.nhvzg.result.OrderMessage">
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="orderTime" property="orderTime" jdbcType="VARCHAR" />
+    <result column="receiverName" property="receiverName" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="courier_id" property="courierId" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+
+    <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+    <result column="headpic" property="headPic" jdbcType="VARCHAR" />
+    <result column="couriername" property="courierName" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+
+    <collection column="order_id" javaType="List"  ofType="com.nhvzg.entity.OrderItem"  property="orderItems" select="selectOrderItem"/><!--selectOrderItem-->
+    <!--<collection  javaType="List"  ofType="com.nhvzg.entity.OrderItem"  property="orderItems">
+      <id column="order_item_id" property="orderItemId" jdbcType="VARCHAR" />
+      <result column="food_id" property="foodId" jdbcType="VARCHAR" />
+      <result column="foodName" property="foodname" jdbcType="VARCHAR" />
+      <result column="unitPrice" property="unitprice" jdbcType="DOUBLE" />
+      <result column="num" property="num" jdbcType="INTEGER" />
+      <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    </collection>-->
+  </resultMap>
+
+  <resultMap id="OrderMsgItem" type="com.nhvzg.entity.OrderItem"><!--selectOrderItem  resultMap-->
+    <id column="order_item_id" property="orderItemId" jdbcType="VARCHAR" />
+    <result column="food_id" property="foodId" jdbcType="VARCHAR" />
+    <result column="foodName" property="foodname" jdbcType="VARCHAR" />
+    <result column="unitPrice" property="unitprice" jdbcType="DOUBLE" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectOrderItem" parameterType="java.lang.String" resultType="com.nhvzg.entity.OrderItem" resultMap="OrderMsgItem">
+    select * from `orderitem`
+    where order_id = #{order_id,jdbcType=VARCHAR};
+  </select>
+  <select id="getOrderMsgByUser" resultMap="OrderMsg" parameterType="java.lang.String">
+
+
+		select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right  join
+	(select os.*,c.`name` as couriername from courier c
+		right JOIN
+		(SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and o.user_id=#{userId,jdbcType=VARCHAR}) os
+		on c.courier_id=os.courier_id
+	)cosh
+	on cosh.order_id=comy.order_id ORDER BY orderTime desc;
+  </select>
+  
+  <select id="getShopOrderCurrent" resultMap="OrderMsg" parameterType="java.lang.String">
+		select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right join
+	(select os.*,c.`name` as couriername from courier c
+		right JOIN
+		(SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and s.shop_id=#{shopId,jdbcType=VARCHAR} and o.state!='0' and o.state!='-1' and o.state!='5') os
+		on c.courier_id=os.courier_id
+	)cosh
+	on cosh.order_id=comy.order_id ORDER BY cosh.state desc;
+  </select>
+
+
+  <select id="getShopOrderHistory" resultMap="OrderMsg" parameterType="java.lang.String">
+    select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right join
+    (select os.*,c.`name` as couriername from courier c
+    right JOIN
+    (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and s.shop_id=#{shopId,jdbcType=VARCHAR} and (o.state='0' OR o.state='-1')) os
+    on c.courier_id=os.courier_id
+    )cosh
+    on cosh.order_id=comy.order_id ORDER BY orderTime desc;
+  </select>
+
+<!--
+    select os.*,c.`name` as couriername from courier c
+		INNER JOIN
+		(SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id AND o.user_id=#{userId,jdbcType=VARCHAR}) os
+		on c.courier_id=os.courier_id
+-->
+</mapper>
