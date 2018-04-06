@@ -34,7 +34,7 @@
       <div class="regist">
         <div class="block">
           <div style="width: 250px;margin: 0 auto;">
-            <img class="logo" src="/static/img/zfood/logo.jpg" alt="">
+            <img class="logo" src="static/img/zfood/logo.jpg" alt="">
           </div>
           <form>
             <div name="formDiv">
@@ -223,9 +223,9 @@
                 var json=JSON.parse(result2);
                 var exdate = new Date();
                 exdate.setTime(exdate.getTime() + json['exp']);
-                document.cookie="userId="+json['X-data']['user']['userId']+";expires="+exdate.toGMTString();
-                document.cookie="headImg="+json['X-data']['user']['headImg']+";expires="+exdate.toGMTString();
-                document.cookie="token="+response.headers.token+";expires="+exdate.toGMTString();
+                document.cookie="userId="+json['X-data']['user']['userId']+";expires="+exdate.toGMTString() + ";path=/";
+                document.cookie="headImg="+json['X-data']['user']['headImg']+";expires="+exdate.toGMTString()+ ";path=/";
+                document.cookie="token="+response.headers.token+";expires="+exdate.toGMTString()+ ";path=/";
                 this.$setLocalStorage('userId',json['X-data']['user']['userId']);
                 this.$setLocalStorage('headImg',json['X-data']['user']['headImg']);
                 if(json['X-data']['user']['state']==='1') {
