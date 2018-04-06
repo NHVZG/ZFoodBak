@@ -92,4 +92,8 @@
   <select id="getFavShop" resultMap="FavShopMsg" parameterType="java.lang.String">
     SELECT fs.*,s.shopName,s.headPic FROM favshop fs INNER JOIN shop s on fs.shop_id=s.shop_id where fs.user_id=#{userId,jdbcType=VARCHAR};
   </select>
+
+  <select id="checkFavShop" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select * from favshop WHERE shop_id=#{shopId,jdbcType=VARCHAR} AND  user_id =#{userId,jdbcType=VARCHAR}
+  </select>
 </mapper>

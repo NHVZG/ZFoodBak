@@ -57,6 +57,12 @@ public class ShopCouponController {
     }
 
 
+    @PostMapping("/coupon/user")
+    //shopId
+    public List<ShopCouponMsg>getShopCouponToUser(@RequestBody String json) throws IOException {
+        Coupon coupon=JsonTools.GetObject(json,Coupon.class);
+        return service.getShopCouponMsg(coupon.getShopId());
+    }
 
     @Deprecated
     @PostMapping("/coupon/add")

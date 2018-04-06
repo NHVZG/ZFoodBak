@@ -10,7 +10,9 @@ import com.nhvzg.tools.UUIDTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by NHVZG on 2018/2/26.
@@ -35,6 +37,12 @@ public class FavService {
         shopMapper.deleteByPrimaryKey(favShopId);
     }
 
+    public List checkFavShop(String shopId,String userId){
+        Map map=new HashMap();
+        map.put("shopId",shopId);
+        map.put("userId",userId);
+        return shopMapper.checkFavShop(map);
+    }
 
 
     public List<FavFoodMsg>getAllFavFood(String id){

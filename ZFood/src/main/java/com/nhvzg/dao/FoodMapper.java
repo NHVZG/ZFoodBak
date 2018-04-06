@@ -4,6 +4,7 @@ import com.nhvzg.entity.Food;
 import com.nhvzg.result.FoodShortMsg;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FoodMapper {
     int deleteByPrimaryKey(String foodId);
@@ -29,4 +30,6 @@ public interface FoodMapper {
     int updateList(List list);
 
     List<FoodShortMsg>getAllFoodShortMsg(String shopId);
+
+    List<FoodShortMsg>getAllFoodwithShopAndUser(Map map);
 }

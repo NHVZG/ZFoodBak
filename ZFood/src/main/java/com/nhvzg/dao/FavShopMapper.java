@@ -4,6 +4,7 @@ import com.nhvzg.entity.FavShop;
 import com.nhvzg.result.FavShopMsg;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FavShopMapper {
     int deleteByPrimaryKey(String favShopId);
@@ -23,4 +24,6 @@ public interface FavShopMapper {
     int addList(List<FavShop> list);
 
     List<FavShopMsg>getFavShop(String userId);
+
+    List<FavShop> checkFavShop(Map map);
 }

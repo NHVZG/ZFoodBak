@@ -10,6 +10,15 @@ public class FoodShortMsg {
     private Double sendprice;
     private Double packprice;
     private String pic;
+    private String favFoodId;
+
+    public String getFavFoodId() {
+        return favFoodId;
+    }
+
+    public void setFavFoodId(String favFoodId) {
+        this.favFoodId = favFoodId;
+    }
 
     public String getName() {
         return name;

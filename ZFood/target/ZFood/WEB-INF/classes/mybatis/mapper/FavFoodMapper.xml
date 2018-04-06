@@ -88,4 +88,7 @@
 (SELECT ff.fav_food_id,f.food_id,f.`name` as foodName ,f.shop_id,f.pic FROM favfood ff INNER JOIN food f on f.food_id=ff.food_id where ff.user_id=#{userId,jdbcType=VARCHAR})
 fff INNER JOIN shop s on s.shop_id=fff.shop_id;
   </select>
+
+
+
 </mapper>

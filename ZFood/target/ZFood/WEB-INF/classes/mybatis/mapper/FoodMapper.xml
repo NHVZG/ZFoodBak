@@ -214,10 +214,24 @@
     <result column="sendPrice" property="sendprice" jdbcType="DOUBLE" />
     <result column="packPrice" property="packprice" jdbcType="DOUBLE" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="fav_food_id" property="favFoodId" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getAllFoodShortMsg" resultMap="ShortFoodMsg">
     select * from food where shop_id=#{shopId,jdbcType=VARCHAR}
   </select>
+
+  <select id="getAllFoodwithShopAndUser" resultMap="ShortFoodMsg" parameterType="hashmap">
+    SELECT f.*,ff.fav_food_id  FROM
+    (
+	    SELECT * FROM favfood WHERE user_id =#{userId,jdbcType=VARCHAR}
+     ) ff
+    RIGHT JOIN
+    (
+        SELECT * FROM food where shop_id=#{shopId,jdbcType=VARCHAR}
+    )f
+    ON f.food_id = ff.food_id;
+  </select>
+
 </mapper>
 <!--<foreach collection="list" item="item" index="index" separator=" " open="case food_id" close="end">
         when #{item.foodId} then #{item.name}</foreach>-->

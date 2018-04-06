@@ -7,7 +7,9 @@ import com.nhvzg.tools.UUIDTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by NHVZG on 2018/2/27.
@@ -37,7 +39,7 @@ public class FoodService {
     public String addFood(Food food,boolean file){
         food.setFoodId(UUIDTools.getPrimaryKey());
         if(!file)
-            food.setPic("/static/img/food/"+food.getFoodId()+".jpg");
+            food.setPic("static/img/food/"+food.getFoodId()+".jpg");
         foodMapper.insert(food);
         return food.getFoodId();
     }
@@ -51,8 +53,11 @@ public class FoodService {
     }
 
     //所有食品
-    public List<Food> getAllFood(){
-        return foodMapper.getAll();
+    public List<FoodShortMsg> getAllFood(String shopId,String userId){
+        Map map=new HashMap();
+        map.put("shopId",shopId);
+        map.put("userId",userId);
+        return foodMapper.getAllFoodwithShopAndUser(map);
     }
 
     @Deprecated

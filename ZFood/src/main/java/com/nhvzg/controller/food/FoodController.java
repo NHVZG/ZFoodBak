@@ -3,12 +3,14 @@ package com.nhvzg.controller.food;
 import com.github.pagehelper.PageHelper;
 import com.nhvzg.entity.Food;
 import com.nhvzg.result.FoodShortMsg;
+import com.nhvzg.service.FavService;
 import com.nhvzg.service.FoodService;
 import com.nhvzg.tools.JsonTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,6 +25,8 @@ import java.util.Map;
 public class FoodController {
     @Autowired
     private FoodService foodService;
+    @Autowired
+    private FavService favService;
 
     @PostMapping("/food/shop")
     //提供shopId
@@ -39,7 +43,7 @@ public class FoodController {
         return map;
     }
 
-    @PostMapping("/food/coupon")
+    @PostMapping("/food/coupon")//优惠券单获取关联食物列表
     public List<FoodShortMsg>getAllShortFood(@RequestBody String json) throws IOException {
         Food food=JsonTools.GetObject(json,Food.class);
         return foodService.getAllShortFoodByShopid(food.getShopId());
@@ -85,8 +89,12 @@ public class FoodController {
 
 
     @PostMapping("/food/user")
-    public List<Food> getAllFoodByShopIId(@RequestBody String json) throws IOException {
-        Food food=JsonTools.GetObject(json,Food.class);
-        return foodService.getAllFoodByShopId(food.getShopId());
+    public Map getAllFood(@RequestBody String json,HttpServletRequest request) throws IOException {
+        Map map=JsonTools.GetObject(json,Map.class);
+        List list=favService.checkFavShop((String)map.get("shopId"),(String) request.getAttribute("userId"));
+        Map result=new HashMap();
+        result.put("favShop",list.size()>0);//是否收藏的商家
+        result.put("foodList",foodService.getAllFood((String)map.get("shopId"),(String) request.getAttribute("userId")));//食物列表
+        return result;
     }
 }
