@@ -7,6 +7,7 @@ import FoodTable from '@/components/FoodTable'
 import CouponTable from '@/components/CouponTable'
 import UserManage from '@/components/UserManage'
 import ShopIndex from '@/components/ShopIndex'
+import PayOff from '@/components/PayOff'
 import Index from '@/components/Index'
 import Test from '@/components/test'
 import OrderItem from '@/components/test/OrderItem'
@@ -69,5 +70,10 @@ export default new Router({
       name:'OrderItem',
       component:OrderItem
     },
+    {
+      path:'/PayOff',
+      name:'PayOff',
+      component:PayOff
+    }
   ]
 })
