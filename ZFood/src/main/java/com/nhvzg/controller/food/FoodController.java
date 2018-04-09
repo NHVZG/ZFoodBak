@@ -1,6 +1,7 @@
 package com.nhvzg.controller.food;
 
 import com.github.pagehelper.PageHelper;
+import com.nhvzg.entity.FavShop;
 import com.nhvzg.entity.Food;
 import com.nhvzg.result.FoodShortMsg;
 import com.nhvzg.service.FavService;
@@ -93,7 +94,10 @@ public class FoodController {
         Map map=JsonTools.GetObject(json,Map.class);
         List list=favService.checkFavShop((String)map.get("shopId"),(String) request.getAttribute("userId"));
         Map result=new HashMap();
-        result.put("favShop",list.size()>0);//是否收藏的商家
+        String favShopId=null;
+        if(list.size()>0)
+            favShopId=((FavShop)list.get(0)).getFavShopId();
+        result.put("favShop",favShopId);//是否收藏的商家
         result.put("foodList",foodService.getAllFood((String)map.get("shopId"),(String) request.getAttribute("userId")));//食物列表
         return result;
     }

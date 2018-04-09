@@ -16,7 +16,7 @@
     <result column="score" property="score" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    order_id, shop_id, user_id, price, orderTime, receiverName, address, phone, remark, 
+    order_id, shop_id, user_id, price, orderTime, receiverName, address, phone, remark,
     courier_id, state, score
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -257,6 +257,57 @@
     on cosh.order_id=comy.order_id ORDER BY orderTime desc;
   </select>
 
+
+  <select id="getShoppingCart" parameterType="java.lang.String" resultMap="OrderMsg">
+    select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right  join
+      (select os.*,c.`name` as couriername from courier c
+        right JOIN
+        (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and o.user_id=#{userId,jdbcType=VARCHAR} and o.state='5') os
+          on c.courier_id=os.courier_id
+      )cosh
+        on cosh.order_id=comy.order_id ORDER BY orderTime desc;
+  </select>
+
+  <select id="getShoppingCartByShop" resultMap="OrderMsg" parameterType="java.util.HashMap">
+    select * from `order` where user_id=#{userId,jdbcType=VARCHAR}  and state=5 and shop_id=#{shopId,jdbcType=VARCHAR};
+  </select>
+
+  <update id="updateOrderItemNum" parameterType="java.util.List">
+    update `orderitem`
+    <trim prefix="set" suffixOverrides=",">
+    <trim prefix="`num`= case" suffix="end,">
+      <foreach collection="list" item="i" index="index">
+        <if test="i.num!=null">when order_item_id=#{i.orderItemId} then #{i.num}</if>
+      </foreach>
+    </trim>
+    </trim>
+    where
+    <foreach collection="list" separator="or" item="item" index="index" >
+      order_item_id=#{item.orderItemId}
+    </foreach>
+  </update>
+
+  <insert id="addOrderItem" parameterType="java.util.List">
+    insert into  `orderitem` (`order_item_id`,`food_id`,`foodName`,`unitPrice`,`num`,`order_id`) VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      #{item.orderItemId,jdbcType=VARCHAR},
+      #{item.foodId,jdbcType=VARCHAR},
+      #{item.foodname,jdbcType=VARCHAR},
+      #{item.unitprice,jdbcType=DOUBLE},
+      #{item.num,jdbcType=INTEGER},
+      #{item.orderId,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
+  <update id="updateOrderPrice" parameterType="java.lang.String">
+    update `order` set price=(
+      select SUM(oio.price) as sumPrice from(
+                                              select oi.unitPrice*oi.num as price from `order` o RIGHT JOIN `orderitem` oi on o.order_id=oi.order_id WHERE o.order_id=#{orderId,jdbcType=VARCHAR}
+                                            )oio
+    ) WHERE order_id=#{orderId,jdbcType=VARCHAR}
+  </update>
 <!--
     select os.*,c.`name` as couriername from courier c
 		INNER JOIN

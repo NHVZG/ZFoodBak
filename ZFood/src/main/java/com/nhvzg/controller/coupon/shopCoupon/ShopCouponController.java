@@ -9,6 +9,7 @@ import com.nhvzg.tools.JsonTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,9 +60,9 @@ public class ShopCouponController {
 
     @PostMapping("/coupon/user")
     //shopId
-    public List<ShopCouponMsg>getShopCouponToUser(@RequestBody String json) throws IOException {
-        Coupon coupon=JsonTools.GetObject(json,Coupon.class);
-        return service.getShopCouponMsg(coupon.getShopId());
+    public List<ShopCouponMsg>getShopCouponToUser(@RequestBody String json, HttpServletRequest request) throws IOException {
+        Map map=JsonTools.GetObject(json,Map.class);
+        return service.getShopCouponWithUser((String)map.get("shopId"),(String)request.getAttribute("userId"));
     }
 
     @Deprecated

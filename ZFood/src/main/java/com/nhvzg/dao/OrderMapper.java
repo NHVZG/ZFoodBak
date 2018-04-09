@@ -5,6 +5,7 @@ import com.nhvzg.entity.OrderItem;
 import com.nhvzg.result.OrderMessage;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderMapper {
     int deleteByPrimaryKey(String orderId);
@@ -21,6 +22,7 @@ public interface OrderMapper {
 
     List<Order> getOrderByUser(String userId);
 
+    //用户及商家获取订单
     List<OrderMessage>getOrderMsgByUser(String userId);
 
     List<OrderMessage>getShopOrderCurrent(String shopId);
@@ -29,5 +31,14 @@ public interface OrderMapper {
 
     List<OrderItem>selectOrderItem(String order_id);
 
+    //购物车
+    List<OrderMessage> getShoppingCart(String userId);
 
+    List<OrderMessage> getShoppingCartByShop(Map map);
+
+    void updateOrderItemNum(List list);
+
+    void addOrderItem(List list);
+
+    void updateOrderPrice(String orderId);
 }

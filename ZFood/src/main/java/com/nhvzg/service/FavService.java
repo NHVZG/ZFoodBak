@@ -28,7 +28,6 @@ public class FavService {
     public List<FavShopMsg> getAllFavShop(String userId){
         return shopMapper.getFavShop(userId);
     }
-
     public void addFavShop(FavShop favShop){
         favShop.setFavShopId(UUIDTools.getPrimaryKey());
         shopMapper.insert(favShop);
@@ -36,23 +35,34 @@ public class FavService {
     public void removeFavShop(String favShopId){
         shopMapper.deleteByPrimaryKey(favShopId);
     }
-
     public List checkFavShop(String shopId,String userId){
         Map map=new HashMap();
         map.put("shopId",shopId);
         map.put("userId",userId);
         return shopMapper.checkFavShop(map);
     }
-
-
     public List<FavFoodMsg>getAllFavFood(String id){
         return foodMapper.getFavFood(id);
     }
 
+
+    public void addFavFoodsList(List list){
+        for(int i=0;i<list.size();i++){
+            ((FavFood)list.get(i)).setFavFoodId(UUIDTools.getPrimaryKey());
+        }
+        foodMapper.addFavFoodsList(list);
+    }
+    public void deleteFavFoodList(List list){
+        foodMapper.deleteFavFoodList(list);
+    }
+
+
+    @Deprecated
     public void addFavFood(FavFood food){
         food.setFavFoodId(UUIDTools.getPrimaryKey());
         foodMapper.insert(food);
     }
+    @Deprecated
     public void removeFavFood(String favFoodId){
         foodMapper.deleteByPrimaryKey(favFoodId);
     }

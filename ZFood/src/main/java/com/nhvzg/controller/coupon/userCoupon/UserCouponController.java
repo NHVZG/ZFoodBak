@@ -32,6 +32,13 @@ public class UserCouponController {
         return service.getUserCouponItem(item);
     }
 
+    @PostMapping("/userCouponItem/add/list")
+    public void CouponItemAddList(@RequestBody String json) throws IOException {
+        List list=JsonTools.GetList(json,CouponItem.class);
+        service.addCouponItemList(list);
+    }
+
+    @Deprecated
     @PostMapping("/userCouponItem/add")
     //starttime endtime  couponid userId
     public void CouponItemAdd(@RequestBody String json) throws IOException {

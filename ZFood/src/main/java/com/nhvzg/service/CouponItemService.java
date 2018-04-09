@@ -24,6 +24,16 @@ public class CouponItemService {
     private CouponMapper mapper;
 
 
+    public void addCouponItemList(List list){
+        for(int i=0;i<list.size();i++){
+            CouponItem item=((CouponItem)list.get(i));
+            item.setCouponItemId(UUIDTools.getPrimaryKey());
+            item.setState(1);
+        }
+        itemMapperr.addList(list);
+    }
+
+    @Deprecated
     //添加用户优惠券
     public void addCouponItem(CouponItem item){
         item.setCouponItemId(UUIDTools.getPrimaryKey());

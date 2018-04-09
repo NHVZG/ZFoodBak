@@ -7,7 +7,9 @@ import com.nhvzg.tools.UUIDTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by NHVZG on 2018/2/26.
@@ -16,6 +18,13 @@ import java.util.List;
 public class CouponService {
     @Autowired
     private CouponMapper mapper;
+
+    public List<ShopCouponMsg>getShopCouponWithUser(String shopId,String userId){
+        Map map=new HashMap();
+        map.put("shopId",shopId);
+        map.put("userId",userId);
+        return mapper.getShopCouponWithUser(map);
+    }
 
     public List<ShopCouponMsg> getShopCouponMsg(String shopId){
         return mapper.getShopCouponMsg(shopId);

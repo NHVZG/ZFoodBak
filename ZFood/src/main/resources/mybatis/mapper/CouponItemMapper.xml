@@ -144,4 +144,18 @@ INNER JOIN shop s on cic.shop_id=s.shop_id
 where cic.user_id=#{userId,jdbcType=VARCHAR})cics left JOIN food f on f.food_id=cics.extra
 ORDER BY state desc,endTime asc;
   </select>
+
+  <insert id="addList" parameterType="java.util.List">
+     insert into couponitem (coupon_item_id, `state`,user_id, couponId,startTime,endTime) values
+     <foreach collection="list" item="item" index="index" separator=",">
+       (
+       #{item.couponItemId,jdbcType=VARCHAR},
+       #{item.state,jdbcType=INTEGER},
+       #{item.userId,jdbcType=VARCHAR},
+       #{item.couponid,jdbcType=VARCHAR},
+       #{item.starttime,jdbcType=VARCHAR},
+       #{item.endtime,jdbcType=VARCHAR}
+       )
+     </foreach>
+  </insert>
 </mapper>

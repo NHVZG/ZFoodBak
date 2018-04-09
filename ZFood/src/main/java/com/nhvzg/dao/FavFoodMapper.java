@@ -21,4 +21,8 @@ public interface FavFoodMapper {
     List<FavFood> getAll();
 
     List<FavFoodMsg> getFavFood(String userId);
+
+    int addFavFoodsList(List list);
+
+    int deleteFavFoodList(List list);
 }

@@ -90,5 +90,18 @@ fff INNER JOIN shop s on s.shop_id=fff.shop_id;
   </select>
 
 
+  <insert id="addFavFoodsList" parameterType="java.util.List">
+    insert into favfood (fav_food_id, user_id, food_id) values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.favFoodId,jdbcType=VARCHAR},#{item.userId,jdbcType=VARCHAR},#{item.foodId,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <delete id="deleteFavFoodList" parameterType="java.util.List">
+    delete from favfood where fav_food_id in
+    <foreach item="item" collection="list" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
 
 </mapper>

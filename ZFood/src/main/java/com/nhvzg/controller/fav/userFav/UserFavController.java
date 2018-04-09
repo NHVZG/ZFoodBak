@@ -44,6 +44,7 @@ public class UserFavController {
     @ResponseBody
     //favShopId
     public void FavShopDel(@RequestBody String json) throws IOException {
+        System.out.println("@@@@"+json);
         String favShopId=JsonTools.GetObject(json,FavShop.class).getFavShopId();
         service.removeFavShop(favShopId);
     }
@@ -58,13 +59,28 @@ public class UserFavController {
     public List<FavFoodMsg> FavFood(HttpServletRequest request){
         return service.getAllFavFood((String) request.getAttribute("userId"));
     }
+    @PostMapping("/favFood/add/list")
+    public void AddFavFoodList(@RequestBody String json) throws IOException {
+        List list=JsonTools.GetList(json,FavFood.class);
+        System.out.println(list);
+        service.addFavFoodsList(list);
+    }
+    @PostMapping("/favFood/del/list")
+    public void DelFavFoodList(@RequestBody String json) throws IOException {
+        List list=JsonTools.GetList(json,String.class);
+        service.deleteFavFoodList(list);
+    }
 
+
+
+    @Deprecated
     @PostMapping("/favFood/add")
     @ResponseBody
     //userId foodId
     public void FavFoodAdd(@RequestBody String json) throws IOException {
         service.addFavFood(JsonTools.GetObject(json,FavFood.class));
     }
+    @Deprecated
     @PostMapping("/favFood/del")
     @ResponseBody
     //favFoodId

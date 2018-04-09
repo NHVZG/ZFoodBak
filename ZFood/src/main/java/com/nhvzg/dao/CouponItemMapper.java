@@ -21,4 +21,6 @@ public interface CouponItemMapper {
     List<CouponItem> getAll();
 
     List<UserCouponMsg> getCouponsByUser(String userId);
+
+    void addList(List list);
 }

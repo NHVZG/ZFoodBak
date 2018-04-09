@@ -4,6 +4,7 @@ import com.nhvzg.entity.Coupon;
 import com.nhvzg.result.ShopCouponMsg;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CouponMapper {
     int deleteByPrimaryKey(String couponId);
@@ -29,5 +30,7 @@ public interface CouponMapper {
     int insertCouponList(List list);
 
     int deleteCouponList(List list);
+
+    List<ShopCouponMsg>getShopCouponWithUser(Map map);
 
 }
