@@ -7,7 +7,6 @@ import com.nhvzg.result.UserCouponMsg;
 import com.nhvzg.service.CouponItemService;
 import com.nhvzg.service.OrderService;
 import com.nhvzg.tools.JsonTools;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +49,7 @@ public class OrderController {
         return list;
     }
 
-
+    //购物车
     @PostMapping("/shoppingCart")
     public List<OrderMessage> getShoppingCart(HttpServletRequest request){
         return orderService.getShoppingCart((String) request.getAttribute("userId"));
@@ -75,17 +74,12 @@ public class OrderController {
         //List orderItems=JsonTools.GetPartObjectToList(json,OrderMessage.class,"orderItems");
         List couponsItems=JsonTools.GetPartObjectToList(json,UserCouponMsg.class,"couponsItems");
         OrderMessage order=JsonTools.GetPartObjectToObject(json, OrderMessage.class,"order");
-        couponItemService.setCouponItemListState(couponsItems);
+        if(couponsItems.size()>0) {
+            couponItemService.setCouponItemListState(couponsItems);
+        }
         orderService.commitOrder(order);
     }
 
-
-    @PostMapping("/order/add")
-    //userId shopId ordertime receivername phone address remark price state
-    public void addOrder(@RequestBody String json) throws IOException {
-        Order order=JsonTools.GetObject(json,Order.class);
-        orderService.addOrder(order);
-    }
 
     @PostMapping("/order/edit/courier")
     //orderId courierId 更改订单的配送员
@@ -99,4 +93,21 @@ public class OrderController {
         Order order=JsonTools.GetObject(json,Order.class);
         orderService.editOrderState(order);
     }
+    @PostMapping("/order/edit/comment")
+    public void editOrderComment(@RequestBody String json,HttpServletRequest request) throws IOException {
+       OrderMessage orderMessage=JsonTools.GetObject(json,OrderMessage.class);
+       orderMessage.setUserId((String) request.getAttribute("userId"));
+       orderService.saveComment(orderMessage);
+    }
+
+
+
+    @Deprecated
+    @PostMapping("/order/add")
+    //userId shopId ordertime receivername phone address remark price state
+    public void addOrder(@RequestBody String json) throws IOException {
+        Order order=JsonTools.GetObject(json,Order.class);
+        orderService.addOrder(order);
+    }
+
 }

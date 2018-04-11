@@ -10,26 +10,26 @@
     <result column="comment" jdbcType="VARCHAR" property="comment" />
   </resultMap>
   <sql id="Base_Column_List">
-    comment_id, user_id, food_id, source, comment
+    comment_id, user_id, order_id, `source`, `comment`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from comment
+    from `comment`
     where comment_id = #{commentId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from comment
+    delete from `comment`
     where comment_id = #{commentId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.nhvzg.entity.Comment">
-    insert into comment (comment_id, user_id, food_id, 
-      source, comment)
-    values (#{commentId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{foodId,jdbcType=VARCHAR}, 
+    insert into `comment` (comment_id, user_id, order_id,
+      `source`, `comment`)
+    values (#{commentId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
       #{source,jdbcType=INTEGER}, #{comment,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nhvzg.entity.Comment">
-    insert into comment
+    insert into `comment`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="commentId != null">
         comment_id,
@@ -38,13 +38,13 @@
         user_id,
       </if>
       <if test="foodId != null">
-        food_id,
+        order_id,
       </if>
       <if test="source != null">
-        source,
+        `source`,
       </if>
       <if test="comment != null">
-        comment,
+        `comment`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -55,7 +55,7 @@
         #{userId,jdbcType=VARCHAR},
       </if>
       <if test="foodId != null">
-        #{foodId,jdbcType=VARCHAR},
+        #{orderId,jdbcType=VARCHAR},
       </if>
       <if test="source != null">
         #{source,jdbcType=INTEGER},
@@ -66,34 +66,34 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.Comment">
-    update comment
+    update `comment`
     <set>
       <if test="userId != null">
         user_id = #{userId,jdbcType=VARCHAR},
       </if>
       <if test="foodId != null">
-        food_id = #{foodId,jdbcType=VARCHAR},
+        order_id = #{orderId,jdbcType=VARCHAR},
       </if>
       <if test="source != null">
-        source = #{source,jdbcType=INTEGER},
+        `source` = #{source,jdbcType=INTEGER},
       </if>
       <if test="comment != null">
-        comment = #{comment,jdbcType=VARCHAR},
+        `comment` = #{comment,jdbcType=VARCHAR},
       </if>
     </set>
     where comment_id = #{commentId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.Comment">
-    update comment
+    update `comment`
     set user_id = #{userId,jdbcType=VARCHAR},
-      food_id = #{foodId,jdbcType=VARCHAR},
-      source = #{source,jdbcType=INTEGER},
-      comment = #{comment,jdbcType=VARCHAR}
+      order_id = #{orderId,jdbcType=VARCHAR},
+      `source` = #{source,jdbcType=INTEGER},
+      `comment` = #{comment,jdbcType=VARCHAR}
     where comment_id = #{commentId,jdbcType=VARCHAR}
   </update>
 
-  <select id="getCommentByFood" parameterType="java.lang.String" resultMap="BaseResultMap">
-      select * from comment
+<!--  <select id="getCommentByFood" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select * from `comment`
       where food_id = #{foodId,jdbcType=VARCHAR}
-  </select>
+  </select>-->
 </mapper>

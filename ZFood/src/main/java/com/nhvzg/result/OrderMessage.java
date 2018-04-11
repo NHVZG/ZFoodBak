@@ -25,6 +25,7 @@ public class OrderMessage {
     private String state;
     private Double sendprice;
     private Double preferential;
+    private Integer sendscore;
     //OrderItem
     private List<OrderItem>orderItems;
    /* private String orderItemId;
@@ -39,6 +40,14 @@ public class OrderMessage {
     private String comment;
     //Courier
     private String courierName;
+
+    public Integer getSendscore() {
+        return sendscore;
+    }
+
+    public void setSendscore(Integer sendscore) {
+        this.sendscore = sendscore;
+    }
 
     public Double getSendprice() {
         return sendprice;

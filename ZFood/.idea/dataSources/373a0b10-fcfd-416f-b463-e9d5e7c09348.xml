@@ -411,139 +411,143 @@
       <Position>14</Position>
       <DataType>double(20,2)|0</DataType>
     </column>
-    <key id="108" parent="30" name="PRIMARY">
+    <column id="108" parent="30" name="sendscore">
+      <Position>15</Position>
+      <DataType>int(10)|0</DataType>
+    </column>
+    <key id="109" parent="30" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>order_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="109" parent="31" name="order_item_id">
+    <column id="110" parent="31" name="order_item_id">
       <Position>1</Position>
       <Comment>订单项id</Comment>
       <DataType>varchar(256)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="110" parent="31" name="food_id">
+    <column id="111" parent="31" name="food_id">
       <Position>2</Position>
       <Comment>对应食品</Comment>
       <DataType>varchar(256)|0</DataType>
     </column>
-    <column id="111" parent="31" name="foodName">
+    <column id="112" parent="31" name="foodName">
       <Position>3</Position>
       <Comment>食品名(考虑可能改名)</Comment>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="112" parent="31" name="unitPrice">
+    <column id="113" parent="31" name="unitPrice">
       <Position>4</Position>
       <Comment>下单时单价</Comment>
       <DataType>double(20,2)|0</DataType>
     </column>
-    <column id="113" parent="31" name="num">
+    <column id="114" parent="31" name="num">
       <Position>5</Position>
       <Comment>数量</Comment>
       <DataType>int(15)|0</DataType>
     </column>
-    <column id="114" parent="31" name="order_id">
+    <column id="115" parent="31" name="order_id">
       <Position>6</Position>
       <Comment>订单id</Comment>
       <DataType>varchar(256)|0</DataType>
     </column>
-    <column id="115" parent="31" name="packPrice">
+    <column id="116" parent="31" name="packPrice">
       <Position>7</Position>
       <DataType>double(20,2)|0</DataType>
     </column>
-    <key id="116" parent="31" name="PRIMARY">
+    <key id="117" parent="31" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>order_item_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="117" parent="32" name="shop_id">
+    <column id="118" parent="32" name="shop_id">
       <Position>1</Position>
       <Comment>商家id</Comment>
       <DataType>varchar(256)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="118" parent="32" name="shopName">
+    <column id="119" parent="32" name="shopName">
       <Position>2</Position>
       <Comment>商店名称</Comment>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="119" parent="32" name="income">
+    <column id="120" parent="32" name="income">
       <Position>3</Position>
       <Comment>收入</Comment>
       <DataType>double(30)|0</DataType>
     </column>
-    <column id="120" parent="32" name="phone">
+    <column id="121" parent="32" name="phone">
       <Position>4</Position>
       <Comment>电话</Comment>
       <DataType>varchar(15)|0</DataType>
     </column>
-    <column id="121" parent="32" name="address">
+    <column id="122" parent="32" name="address">
       <Position>5</Position>
       <Comment>商家地址</Comment>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="122" parent="32" name="score">
+    <column id="123" parent="32" name="score">
       <Position>6</Position>
       <Comment>商店评分</Comment>
       <DataType>int(10)|0</DataType>
     </column>
-    <column id="123" parent="32" name="user_id">
+    <column id="124" parent="32" name="user_id">
       <Position>7</Position>
       <Comment>关联的用户id(商家作为特殊用户一类)</Comment>
       <DataType>varchar(256)|0</DataType>
     </column>
-    <column id="124" parent="32" name="headPic">
+    <column id="125" parent="32" name="headPic">
       <Position>8</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="125" parent="32" name="PRIMARY">
+    <key id="126" parent="32" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>shop_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="126" parent="33" name="user_id">
+    <column id="127" parent="33" name="user_id">
       <Position>1</Position>
       <Comment>用户id</Comment>
       <DataType>varchar(256)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="127" parent="33" name="name">
+    <column id="128" parent="33" name="name">
       <Position>2</Position>
       <Comment>名称</Comment>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="128" parent="33" name="headImg">
+    <column id="129" parent="33" name="headImg">
       <Position>3</Position>
       <Comment>头像图片位置</Comment>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="129" parent="33" name="phone">
+    <column id="130" parent="33" name="phone">
       <Position>4</Position>
       <Comment>电话</Comment>
       <DataType>varchar(15)|0</DataType>
     </column>
-    <column id="130" parent="33" name="address">
+    <column id="131" parent="33" name="address">
       <Position>5</Position>
       <Comment>默认地址</Comment>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="131" parent="33" name="state">
+    <column id="132" parent="33" name="state">
       <Position>6</Position>
       <Comment>消费者0/商家1/配送员2/管理员3 类型标识</Comment>
       <DataType>varchar(255)|0</DataType>
       <DefaultExpression>&apos;&apos;</DefaultExpression>
     </column>
-    <column id="132" parent="33" name="password">
+    <column id="133" parent="33" name="password">
       <Position>7</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="133" parent="33" name="PRIMARY">
+    <key id="134" parent="33" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <argument id="134" parent="34">
+    <argument id="135" parent="34">
       <ArgumentDirection>R</ArgumentDirection>
       <DataType>int(11)|0</DataType>
     </argument>

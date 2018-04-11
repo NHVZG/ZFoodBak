@@ -29,6 +29,16 @@ public class Order {
 
     private Double preferential;
 
+    private  Integer sendscore;
+
+    public Integer getSendscore() {
+        return sendscore;
+    }
+
+    public void setSendscore(Integer sendscore) {
+        this.sendscore = sendscore;
+    }
+
     public Double getPreferential() {
         return preferential;
     }

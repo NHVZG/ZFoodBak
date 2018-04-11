@@ -1,7 +1,9 @@
 package com.nhvzg.service;
 
+import com.nhvzg.dao.CommentMapper;
 import com.nhvzg.dao.OrderItemMapper;
 import com.nhvzg.dao.OrderMapper;
+import com.nhvzg.entity.Comment;
 import com.nhvzg.entity.Order;
 import com.nhvzg.entity.OrderItem;
 import com.nhvzg.result.OrderMessage;
@@ -23,10 +25,8 @@ public class OrderService {
     private OrderMapper orderMapper;
     @Autowired
     private OrderItemMapper itemMapper;
-
-    public List<Order> getOrderByUser(Order order){
-        return orderMapper.getOrderByUser(order.getUserId());
-    }
+    @Autowired
+    private CommentMapper commentMapper;
 
     public List<OrderMessage>getShoppingCart(String userId){
         return orderMapper.getShoppingCart(userId);
@@ -106,11 +106,6 @@ public class OrderService {
         orderMapper.commitOrderState(order);
     }
 
-    public void addOrder(Order order){
-        order.setOrderId(UUIDTools.getPrimaryKey());
-        orderMapper.insert(order);
-    }
-
     public void editOrderCourier(Order order){
         Order o=orderMapper.selectByPrimaryKey(order.getOrderId());
         o.setCourierId(order.getCourierId());
@@ -121,6 +116,18 @@ public class OrderService {
         Order o=orderMapper.selectByPrimaryKey(order.getOrderId());
         o.setState(order.getState());
         orderMapper.updateByPrimaryKey(o);
+    }
+
+    public void saveComment(OrderMessage orderMessage){
+        Comment comment=new Comment();
+        comment.setUserId(orderMessage.getUserId());
+        comment.setCommentId(UUIDTools.getPrimaryKey());
+        comment.setOrderId(orderMessage.getOrderId());
+        comment.setComment(orderMessage.getComment());
+        comment.setSource(orderMessage.getScore());
+        commentMapper.insert(comment);
+
+        orderMapper.saveScore(orderMessage);
     }
 
     public List<OrderMessage> getOrderMessageByUser(Order order){
@@ -136,5 +143,15 @@ public class OrderService {
     public List<OrderMessage> getOrderHistoryByShop(Order order){
         List<OrderMessage> list =orderMapper.getShopOrderHistory(order.getShopId());
         return list;
+    }
+
+    @Deprecated
+    public void addOrder(Order order){
+        order.setOrderId(UUIDTools.getPrimaryKey());
+        orderMapper.insert(order);
+    }
+    @Deprecated
+    public List<Order> getOrderByUser(Order order){
+        return orderMapper.getOrderByUser(order.getUserId());
     }
 }
