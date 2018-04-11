@@ -379,6 +379,7 @@
               orderitem['foodname']=v['name'];
               orderitem['unitprice']=v['price'];
               orderitem['num']=v['foodNum'];
+              orderitem['packprice']=v['packprice'];
               orderItem.push(orderitem);
           }
       });
@@ -412,7 +413,7 @@
       if(orderItem.length>0){
           console.log(orderItem);
           let orderItemData=JSON.stringify({'orderItems':orderItem,'shopId':this.shopId});
-          this.$http.post('/zfoodshoppingCart/add',orderItemData,{headers: {"Content-Type": "application/json"}});
+          this.$http.post('/zfood/shoppingCart/add',orderItemData,{headers: {"Content-Type": "application/json"}});
       }
       next();
     },

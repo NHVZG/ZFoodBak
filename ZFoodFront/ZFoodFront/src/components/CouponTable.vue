@@ -17,11 +17,11 @@
         </thead>
         <tr v-for="(v,i) in couponMap[couponActive]" :data-coupon-id="v.couponId" :data-index="i">
           <td><input type="checkbox" v-model="checkBar" :value="v"></td>
-          <td><input class="textCell" type="text" @change="Edit" v-model="couponMap[couponActive][i]['name']"/></td>
-          <td><input class="textCell" type="text" @change="Edit" v-model="couponMap[couponActive][i]['detail']"/></td>
+          <td><input class="textCell" type="text" @change="Edit" v-model="couponMap[couponActive][i]['name']" :readonly="isReadOnly"/></td>
+          <td><input class="textCell" type="text" @change="Edit" v-model="couponMap[couponActive][i]['detail']" :readonly="isReadOnly"/></td>
           <td class="calend">
             <vue-datepicker-local
-
+                                  :disabled="isReadOnly"
                                   @change="ChangeDate"
                                   :index=i
                                   :noList="true"
@@ -33,10 +33,10 @@
           <!--<td class="calend"><vue-datepicker-local  @confirm="DateFormat" v-model="couponMap[couponActive][i]['starttime']" clearable></vue-datepicker-local></td> show-buttons <td><input class="textCell" type="text" @change="Edit" v-model="couponMap[couponActive][i]['starttime']"/></td>
           <td class="calend"><vue-datepicker-local  @confirm="DateFormat" v-model="couponMap[couponActive][i]['endtime']" clearable ></vue-datepicker-local></td><td><input class="textCell" type="text" @change="Edit" v-model="couponMap[couponActive][i]['endtime']"/></td>-->
           <td>
-            <input class="textCell" type="text" style="width:50%;" @change="Edit"
+            <input class="textCell" type="text" style="width:50%;" @change="Edit" :readonly="isReadOnly"
                    v-model="couponMap[couponActive][i]['discount']"/>
             <div class="dropdown" style="width:20%;display:inline-block;">
-              <button class="btn dropdown-toggle" type="button"
+              <button class="btn dropdown-toggle" type="button" :disabled="isReadOnly"
                       style="background-color:#f2f2f2;font-size:0.5em;padding:5px;box-shadow:none;"
                       id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{couponMap[couponActive][i]['percent'] === 1 ? '%' : '￥'}}
@@ -47,12 +47,13 @@
               </div>
             </div>
           </td>
-          <td><input class="textCell" type="text" @change="Edit" v-model="couponMap[couponActive ][i]['condition']"/>
+          <td><input class="textCell" type="text" @change="Edit" v-model="couponMap[couponActive ][i]['condition']" :readonly="isReadOnly"/>
           </td>
           <td>
             <button class="btn" :class="couponMap[couponActive][i]['foodName']===null?'dropdown-toggle':''" @click="GetFoodList(i)"
                     :data-foodId="[couponMap[couponActive ][i]['extra']]"
                     style="padding:5px;font-size:0.5em;background-color:#f2f2f2;box-shadow:none;" data-toggle="modal"
+                    :disabled="isReadOnly"
                     data-target="#chooseFood">
               {{couponMap[couponActive][i]['foodName']}}
             </button>
@@ -114,7 +115,7 @@
       </nav>
 
       <div style="right:20px; bottom:0;display: inline-block;position: absolute;">
-        <button style="line-height:1.25em;margin-bottom: 1rem;" class="btn btn-primary" @click="SaveCoupon">保存</button>
+        <button style="line-height:1.25em;margin-bottom: 1rem;" class="btn btn-primary" @click="SaveCoupon" v-show="!isReadOnly">保存</button>
         <button style="line-height:1.25em;margin-bottom: 1rem;" class="btn btn-primary" @click="AddCoupon">增加</button>
         <button style="line-height:1.25em;margin-bottom: 1rem;" class="btn btn-primary" @click="DelCoupon">删除</button>
       </div>
@@ -149,7 +150,7 @@
     width: 100%;
     box-sizing: border-box;
     border: 0px;
-  . background-color: transparent;
+    background-color: transparent;
   }
 
   td {
@@ -189,6 +190,7 @@
         foodMsg: {
           msg: []
         },
+        isReadOnly:true,//不可编辑
         newCoupon: {
           "couponId": '',
           "shopId": this.$getLocalStorage('shopId'),
@@ -198,7 +200,7 @@
           "endtime": '',
           "discount": 0,
           "percent": 0,
-          "usage": '',
+          "usage": 0,
           "condition": '',
           "extra": '',//foodId
           "foodName": ''
@@ -277,25 +279,33 @@
             return;
         }
         let data = JSON.stringify(this.checkBar);
-        let url=this.couponActive>this.couponCounts?'/zfood/coupon/add/list':'/zfood/coupon/edit/list';
-        this.$http.post(url,data,{headers: {"Content-Type": "application/json"}}).then(
-            reponse=>{
-                alert('修改成功');
+        let url='/zfood/coupon/add/list';
+        //let url=this.couponActive>this.couponCounts?'/zfood/coupon/add/list':'/zfood/coupon/edit/list';     //18-4-11不可再修改优惠券
+        if(this.couponActive>this.couponCounts) {
+          this.$http.post(url, data, {headers: {"Content-Type": "application/json"}}).then(
+            reponse => {
+              alert('修改成功');
+              this.isReadOnly=true;
             }
-        );
-        this.checkAll=false;
-        this.checkBar = [];
-        this.editChange=false;
+          );
+          this.checkAll = false;
+          this.checkBar = [];
+          this.editChange = false;
+          this.isReadOnly=true;
+          this.couponMap[this.couponCounts + 1] = undefined;//---
+        }
       },
       AddCoupon(){
+        this.isReadOnly=false;
         this.AddNewRow();
       },
       ChangePage(index){
         this.checkAll = false;
-        if (this.couponMap[this.couponCounts + 1] !== undefined) {
+        if (this.couponMap[this.couponCounts + 1] !== undefined) {//新的一页用于添加数据
           event.returnValue = confirm("还未保存当前页面数据 确定放弃吗");
           if (!event.returnValue)
             return;
+          this.isReadOnly=true;
           this.checkBar = [];
           this.couponMap[this.couponCounts + 1] = undefined;
         }
@@ -344,8 +354,8 @@
           "starttime": new Date(),
           "endtime": new Date(),
           "discount": '',
-          "percent": '',
-          "usage": '',
+          "percent": 0,
+          "usage": 0,
           "condition": '',
           "extra": '',//foodId
           "foodName": ''
