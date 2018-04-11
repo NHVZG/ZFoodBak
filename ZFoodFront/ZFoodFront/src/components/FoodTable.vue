@@ -9,7 +9,7 @@
           <th class="text-center th-font">标签</th>
           <th class="text-center th-font">单价</th>
           <th class="text-center th-font">包装费</th>
-          <th class="text-center th-font">运送费</th>
+         <!-- <th class="text-center th-font">运送费</th>-->
         </tr>
         </thead>
 
@@ -35,7 +35,7 @@
             <td ><input class="textCell" type="text"  @change="Edit" name="foodKind" v-model="foodMap[active][i]['kind']"/></td>
             <td ><input class="textCell" type="text" @change="Edit" name="foodPrice" v-model="foodMap[active][i]['price']"/></td>
             <td ><input class="textCell" type="text" @change="Edit" name="packPrice" v-model="foodMap[active][i]['packprice']"/></td>
-            <td ><input class="textCell" type="text"  @change="Edit" name="sendPrice" v-model="foodMap[active][i]['sendprice']"/></td>
+            <!--<td ><input class="textCell" type="text"  @change="Edit" name="sendPrice" v-model="foodMap[active][i]['sendprice']"/></td>-->
         </tr>
       </table>
       <div style="left:20px; bottom:20px;">

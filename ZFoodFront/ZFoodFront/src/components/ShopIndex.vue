@@ -138,7 +138,7 @@
 
       <div class="tab-pane fade" id="Comments">
 
-        <div class="order" v-for="(v,i) in orderMap">
+        <div class="order" v-for="(v,i) in orderMap" v-if="v.state!==-1">
           <div class="orderHeader" ><div style="padding-left:1.2em;font-size:1.2em;color: white;">{{v.orderTime.split(' ')[0]}}</div></div>
           <div v-for="(oi, item) in v.orderItems">
             <div style="margin-top: 0.5em;">

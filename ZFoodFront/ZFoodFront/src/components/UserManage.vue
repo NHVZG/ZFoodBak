@@ -52,43 +52,32 @@
         </div>
 
         <div class="tab-pane fade" id="foodOrder">
+        <div style="min-height: 32em;background-color: white; padding-bottom: 30px;margin-bottom: 20px;">
           <div class="orderItem" v-for="(v,i) in orderItem">
             <!--商家图片-->
-            <div style="display: inline-block;">
-            <div class="imgBox">
-              <div class="cover">
-            <img class="orderPic" :src="v.headPic"/>
+            <div style="display: inline-block;height: 100%;float:left;">
+              <div class="imgBox">
+                <div class="imgCover">
+                  <img class="orderPic" :src="v.headPic" :class="v.imgClass"/>
+                </div>
               </div>
             </div>
-            </div>
+
             <!--订单信息-->
-            <div  @click="getMesg(v)" data-toggle="modal" data-target="#myModal"  class="orderMessage">
-              <p class="margin-left-2" style="font-size: 1.5em;">{{v.shopName}}</p>
-              <!--<div style="margin-left: 150px;display: inline-block;">
-                <div style="display: inline-block;">
-                  <div class="margin-left-2">{{v.orderItems[0].foodname}}</div>
-                  <div class="margin-left-2"v-if="v.orderItems.length>=2">{{v.orderItems[1].foodname}}</div>
-                  <div class="margin-left-2" v-if="v.orderItems.length>2">....</div>
+            <div  @click="getMesg(i)" data-toggle="modal" data-target="#myModal"  class="orderMessage">
+              <p  style="font-size: 1.5em;">{{v.shopName}}</p>
+
+              <div>
+                <div class="margin-left-2" style="font-size: 1em;position: absolute;bottom: 10px;">
+                  总计：<span style="color: red;padding-right: 10px;">{{v.price}}￥</span>
+                <span class="" style="font-size: 1em;float: right;margin-right: 5px;padding-left: 20px;">下单时间:{{v.orderTime}}</span>
+                <span>{{GetOrderState(v.state) }}</span>
                 </div>
-                <div style="float: right">
-                  <div style="width:10px;">
-                    <div >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{v.orderItems[0].num*v.orderItems[0].unitprice}}￥</div>
-                    <div v-if="v.orderItems.length>=2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{v.orderItems[1].num}}￥</div>
-                  </div>
-                </div>
-              </div>-->
-              <div style="position:absolute;bottom: 5px;width: 100%;">
-                <span class="margin-left-2" style="font-size: 1em;">总计：<span style="color: red">{{v.price}}￥</span></span>
-                <div class="" style="font-size: 1em;float: right;margin-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;下单时间:{{v.orderTime}}</div>
-                <span  class="margin-left-2" style="float: right;font-size: 1em;" v-if="v.state==='-1'">商家未接单</span>
-                <span  class="margin-left-2" style="float: right;font-size: 1em;" v-if="v.state==='0'">订单完成</span>
-                <span  class="margin-left-2" style="float: right;font-size: 1em;" v-else-if="v.state==='1'">正在配送</span>
-                <span  class="margin-left-2" style="float: right;font-size: 1em;" v-else-if="v.state==='2'">等待配送</span>
-                <span  class="margin-left-2" style="float: right;font-size: 1em;" v-else-if="v.state==='3'">已接单</span>
-                <span  class="margin-left-2" style="float: right;font-size: 1em;" v-else-if="v.state==='4'">等待接单</span>
               </div>
+
             </div>
           </div>
+        </div>
           <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -100,29 +89,54 @@
                 </div>
 
                 <div class="modal-body">
-                  商家:{{msg.shopName}}<br>
-                  下单时间:{{msg.orderTime}}<br>
-                  接收人:{{msg.receiverName}}<br>
-                  接收地址:{{msg.address}}<br>
-                  联系方式:{{msg.phone}}<br>
-                  订单状态:<span v-if="msg.state==='0'">订单完成</span>
-                                 <span v-else-if="msg.state==='1'">正在配送</span>
-                                 <span v-else-if="msg.state==='2'">等待配送</span>
-                                 <span v-else-if="msg.state==='3'">已接单</span>
-                                 <span v-else-if="msg.state==='4'">等待接单</span>
-                  <br>
-                  评分:{{msg.score}}<br>
-                  菜单项:
-                  <div v-for="(s,f) in msg.orderItems" style="margin-left: 20px;">
-                    {{s.foodname}} {{s.unitprice}}￥x{{s.num}}份<br>
+                  <div>
+                    <div style="display: inline-block;margin-right: 20px;">
+                      商家:<br>
+                      下单时间:<br>
+                      接收人:<br>
+                      接收地址:<br>
+                      联系方式:<br>
+                      订单状态:<br>
+                      <div v-if="msg.courierName!==null">配送员:</div>
+                      备注:<br>
+                      菜单项:<br>
+                    </div>
+                    <div style="display: inline-block;vertical-align: top;">
+                      {{msg.shopName}}<br>
+                      {{msg.orderTime}}<br>
+                      {{msg.receiverName}}<br>
+                      {{msg.address}}<br>
+                      {{msg.phone}}<br>
+                      {{GetOrderState(msg.state)}}<br>
+                      <div v-if="msg.courierName!==null">{{msg.courierName}}</div>
+                      {{msg.remark}}
+                      <div v-for="(s,f) in msg.orderItems">
+                        <div style="display: inline-block;margin-right: 10px;min-width: 80px;">{{s.foodname}}</div>
+                        <div style="display: inline-block;margin-right: 10px;min-width: 80px;"><span style="color:#F68447;">{{s.unitprice}}￥</span></div>
+                        <div style="display: inline-block;">&times;{{s.num}}份</div>
+                      </div>
+                    </div>
                   </div>
-                  总价:{{msg.price}}￥<br>
-                  我的评价:{{msg.comment}}<br>
+                  <div style="margin-top: 20px;">
+                    <div style="display: inline-block;margin-right: 20px;">
+                      优惠:<br>
+                      付款:<br>
+                      <div style="height: 40px;padding:10px 0;"  v-if="OrderCommentState(msg.state)">评分:</div>
+                      <div style="height: 40px;padding:8px 0 10px;"  v-if="OrderCommentState(msg.state)">配送评分:</div>
+                      <div v-if="OrderCommentState(msg.state)">我的评价:</div>
+                    </div>
+                    <div style="display: inline-block;vertical-align: top;">
+                      <span style="color:#d2c9c9;">{{msg.preferential===null?0:msg.preferential}}￥<br></span>
+                      <span style="color:#F68447;">{{msg.price}}￥<br></span>
+                      <div  v-if="OrderCommentState(msg.state)"><div style="display: inline-block;margin-left: -10px;"><rate :length="5"  v-model="msg.score" :readonly="StarRateState(msg.score)"></rate></div></div>
+                      <div  v-if="OrderCommentState(msg.state)"><div style="display: inline-block;margin-left: -10px;"><rate :length="5" v-model="msg.sendscore" :readonly="StarRateState(msg.sendscore)"></rate></div></div>
+                      <input class="form-control"  v-model="msg.comment"  v-if="OrderCommentState(msg.state)" :readonly="msg['orginComment']!==null"/>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">确定
-                  </button>
+                <div v-if="OrderCommentState(msg.state)" class="modal-footer">
+                  <button type="button" style="background-color: #F68447;color: white;" class="btn btn-default" @click="SaveOrder">确定并保存<!-- data-dismiss="modal" --></button>
                 </div>
               </div><!-- /.modal-content -->
             </div><!-- /.modal -->
@@ -130,40 +144,36 @@
         </div>
 
         <div class="tab-pane fade" id="coupon">
+          <div style="min-height: 32em;background-color: white; padding-bottom: 30px;margin-bottom: 20px;">
               <div v-for="(v,i) in couponItem">
-                <div>
 
-                  <div v-if="v.state===1" :style="couponActiveStyle" style="margin:0 auto;margin-top:40px;height: 229px;width: 454px;position: relative;">
-                    <div style="margin-left: 20px;">
-                      <p style="font-size: 2em;">{{v.name}}</p>
-                        <p style="margin-left: 20px;">{{v.detail}}</p>
-                        <p style="float: right; margin-right: 40px;margin-top: 40px;">{{v.shopName}}</p>
-                        <div style="margin-left: 20px;" v-if="v.foodName!==null">{{v.foodName}}限定</div>
-                        <p style="bottom: 0;position: absolute;margin-left: 20px;">{{v.startTime}}至{{v.endTime}}期间使用</p>
+                  <div :style="couponStyle[v.state+1]" style="margin:0 auto;margin-top:30px;height: 135px;width: 510px;color: #b7512e;position: relative;">
+                    <div style="display: inline-block;">
+                    <div style="margin-left:1em;font-size: 1.5em;margin-bottom: 0.2em;">{{v.name}}</div>
+                    <div style="margin-left:2em;font-size: 0.8em;word-wrap:break-word;width: 330px;">{{v.detail}}</div>
+                    <div v-if="v.endTime!==null&&v.startTime!=null" style="margin-left:2em;margin-bottom:0.3em;position: absolute;bottom: 0;">{{v.startTime}}至{{v.endTime}}期间使用</div>
+                    <div v-else style="margin-left:2em;margin-bottom:0.3em;position: absolute;bottom: 0;">无期限限制</div>
+                    </div>
+                    <div style="display: inline-block;float: right;bottom: 20px;right:10px;position: absolute;color: white">
+                      <a style="cursor: pointer;" @click="ToShop(v.shopId)">{{v.shopName}}</a>
                     </div>
                   </div>
 
-                  <div v-else :style="couponOutStyle" style="margin:0 auto;margin-top:40px;height: 229px;width: 454px;position: relative;">
-                    <div style="margin-left: 20px;">
-                      <p style="font-size: 2em;">{{v.name}}</p>
-                      <p style="margin-left: 20px;">{{v.detail}}</p>
-                      <p style="float: right; margin-right: 40px;margin-top: 40px;">{{v.shopName}}</p>
-                      <div  style="margin-left: 20px;" v-if="v.foodName!==null">{{v.foodName}}限定</div>
-                      <p style="bottom: 0;position: absolute;margin-left: 20px;">{{v.startTime}}至{{v.endTime}}期间使用</p>
-                    </div>
-                  </div>
-
-                </div>
               </div>
+          </div>
         </div>
 
         <div class="tab-pane fade" id="favorite">
+
+          <div style="min-height: 32em;background-color: white; padding-bottom: 30px;margin-bottom: 20px;">
+          <div>
           <div style="background-color: #F68447; width: 200px;color: white;margin-top: 20px;">收藏商家</div>
-          <div style="display: inline-block;margin-bottom: 20px;" v-for="(v,i) in favShops">
+
+          <div style="display: inline-block;margin-bottom: 20px;cursor: pointer;" v-for="(v,i) in favShops" @click="ToShop(v.shopId)">
             <div style="text-align: center; overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
             <div class="imgBox">
-              <div class="cover">
-                <img class="orderPic" :src="v.shopPic"/>
+              <div class="imgCover">
+                <img class="orderPic" :src="v.shopPic===null?'/static/img/zfood/logo-gray-square.jpg':v.shopPic" :class="v.imgClass"/>
               </div>
             </div>
             <div>{{v.favShopName}}</div>
@@ -171,15 +181,17 @@
           </div>
 
           <div style="background-color: #F68447; width: 200px;color: white;">收藏食品</div>
-          <div style="display: inline-block;margin-bottom: 20px;" v-for="(v,i) in favFoods">
+          <div style="display: inline-block;margin-bottom: 20px;cursor: pointer;" v-for="(v,i) in favFoods" @click="ToShop(v.shopId)">
             <div style="text-align: center; overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
               <div class="imgBox">
-                <div class="cover">
-                  <img class="orderPic" :src="v.foodPic"/>
+                <div class="imgCover">
+                  <img class="orderPic" :src="v.foodPic===null?'/static/img/zfood/logo-gray-square.jpg':v.foodPic" :class="v.imgClass"/>
                 </div>
               </div>
               <div>{{v.foodName}}</div>
             </div>
+          </div>
+        </div>
           </div>
         </div>
 
@@ -270,37 +282,37 @@
   .orderItem{
     margin-top: 25px;
     margin-left: 90px;
-    height:200px;
+    height:150px;
     width: 800px;
     border-radius: 8px;
     background-color: #eae7f4;
+    box-shadow: 0 0 7px #F68447;
   }
   .imgBox{
     display:flex;flex-direction:row;
     justify-content:center;
     align-items:center;
     margin-left: 10px;
-    height: 200px;
-    width:200px;
+    height: 150px;
+    width:150px;
   }
-  .cover{
-    overflow: hidden;
+  .imgCover{
+    width:120px;
+    height: 120px;
     border-radius: 50%;
-    height: 160px;
-    width: 160px;
+    overflow: hidden;
   }
-  .orderPic{
-    width: 160px;
-    min-height: 160px;
-    background-color: #0c5460;
+  .img-w{
+    width:120px;
+  }
+  .img-h{
+    height: 120px;
   }
   .orderMessage{
     position: relative;
-    height: 180px;
-    width: 550px;
-    margin-right:20px;
-    margin-top: 1%;
-    float: right;
+    display: inline-block;
+    height: 100%;
+    width: 80%;
   }
 
 </style>
@@ -314,22 +326,49 @@
                     phone:'',
                     address:''
                 },
-              headImgSrc:this.$getLocalStorage('headImg'),//'static/img/user/'+this.$getLocalStorage('userId')+'.jpg' //imgs: 'this.src="' +require('../assets/img/zfood/logo-gray-square.jpg')+'"'
+              //'static/img/user/'+this.$getLocalStorage('userId')+'.jpg' //imgs: 'this.src="' +require('../assets/img/zfood/logo-gray-square.jpg')+'"'
+              headImgSrc:this.$getLocalStorage('headImg'), //用户图片
+
+
               orderItem:[],
               couponItem:[],
               favFoods:[],
               favShops:[],
               orderContentHeight:'',
+
               msg:'',
-              couponActiveStyle: {
-                backgroundImage: "url(" + require("../assets/coupon.png") + ")"
-              },
-              couponOutStyle:{
-                backgroundImage: "url(" + require("../assets/coupon-out.png") + ")"
-              }
+              currentOrderIndex:null,
+              tempScore:0,//保存临时状态的打分
+              tempSendScore:0,
+              saveType:false,
+              couponStyle:[
+                {backgroundImage: "url(" + require("../assets/coupon-shop-out.png") + ")"},
+                {backgroundImage: "url(" + require("../assets/coupon-shop-used.png") + ")"},
+                {backgroundImage: "url(" + require("../assets/coupon-shop.png") + ")"}
+              ]
+            /*
+           couponActiveStyle: {
+           backgroundImage: "url(" + require("../assets/coupon-shop.png") + ")"
+           },
+           couponOutStyle:{
+           backgroundImage: "url(" + require("../assets/coupon-shop-out.png") + ")"
+           },
+           couponUsedStyle:{
+           backgroundImage: "url(" + require("../assets/coupon-shop-used.png") + ")"
+           }
+          */
             }
         },
       mounted(){
+        let _this=this;
+        $('#myModal').on('hidden.bs.modal', function (e) {
+            if(!_this.saveType){
+              _this.orderItem[_this.currentOrderIndex]['score']=_this.tempScore;
+              _this.orderItem[_this.currentOrderIndex]['sendscore']=_this.tempSendScore;
+            }else{
+              _this.saveType=!_this.saveType;
+            }
+        });
         this.imgLoad();
         this.$on('preloaded', () => {//图片加载完成 才能获取宽高
           var preLoadImg=new Image();
@@ -361,6 +400,30 @@
           }
       },
       methods:{
+        ToShop(shopId){
+            this.$goRoute('/ShopIndex/'+shopId);
+        },
+        SaveOrder(){
+          this.$set(this.msg,'orginComment',this.msg['comment']);
+          let comment={};
+          comment['orderId']=this.orderItem[this.currentOrderIndex]['orderId'];
+          this.orderItem[this.currentOrderIndex]['comment']!==null?comment['comment']=this.orderItem[this.currentOrderIndex]['comment']:'';
+          this.orderItem[this.currentOrderIndex]['score']!==null?comment['score']=this.orderItem[this.currentOrderIndex]['score']:'';
+          this.orderItem[this.currentOrderIndex]['sendscore']!==null?comment['sendscore']=this.orderItem[this.currentOrderIndex]['sendscore']:'';
+          let data=JSON.stringify(comment);
+          this.$http.post('/zfood/order/edit/comment',data,{headers: {"Content-Type": "application/json"}});
+          this.saveType=true;
+        },
+        StarRateState(score){
+          if(score===null)
+              return false;
+          return true;
+        },
+        OrderCommentState(state){
+            if(parseInt(state)<1)
+                return true;
+            return false;
+        },
         FileChange(file){
           var filelist = file.path[0].files[0];
           var reader = new FileReader();
@@ -414,7 +477,7 @@
             this.$goRoute('Login');
         },
         TagChange(e){
-            if(e.target.innerHTML==='个人资料')
+            /*if(e.target.innerHTML==='个人资料')
                 this.ContentHeight(32+'em');
             if(e.target.innerHTML==='我的订单') {
                 if(this.orderItem.length<=0)
@@ -427,7 +490,19 @@
             if(e.target.innerHTML==='我的收藏'){
               if(this.favFoods.length<=0&&this.favShops.length<=0)
                this.getFav();
-            }
+            }*/
+          if(e.target.innerHTML==='我的订单') {
+            if(this.orderItem.length<=0)
+              this.GetOrder();
+          }
+          if(e.target.innerHTML==='我的优惠') {
+            if(this.couponItem.length<=0)
+              this.getCoupon();
+          }
+          if(e.target.innerHTML==='我的收藏'){
+            if(this.favFoods.length<=0&&this.favShops.length<=0)
+              this.getFav();
+          }
         },
         //order
         GetOrder(){
@@ -435,16 +510,39 @@
                 response=>{
                   if(response.data['errorCode']===403){alert('重新登陆!');this.$goRoute('Login');return;}
                   else{
-                      console.log(response.data);
                       this.orderItem=response.data;this.OrderPageInit();}
                 }
             );
         },
         OrderPageInit(){
-          this.ContentHeight('auto');
+          //图片初始化
+          this.orderItem.forEach((v,i)=>{
+            let img=new Image();
+            img.addEventListener('load', (e) => {
+              this.$nextTick(() => {
+                this.$set(v, 'imgClass', img.height > img.width ? 'img-w' : 'img-h');
+              });
+            });
+            img.src=v.headPic;
+          });
+       /*   this.ContentHeight('auto');*/
         },
-        getMesg(v){
-          this.msg=v;
+        getMesg(index){
+          this.currentOrderIndex=index;
+          this.msg=this.orderItem[index];
+          this.$set(this.msg,'orginComment',this.msg['comment']);
+          this.tempScore=this.msg.score;
+          this.tempSendScore=this.msg.sendscore;
+        },
+        GetOrderState(state){
+            switch (state){
+              case '-1':return'商家退单';
+              case '0':return'订单完成';
+              case '1':return'正在配送';
+              case '2':return'等待配送';
+              case'3':return '已接单';
+              case'4':return '等待接单';
+            }
         },
         //coupon
         getCoupon(){
@@ -455,8 +553,25 @@
              }
          );
         },
-        CouponPageInit(){this.ContentHeight('auto');},
+        CouponPageInit(){/*this.ContentHeight('auto');*/},
         //fav
+        FavPageInit(){
+          /*this.ContentHeight('auto');*/
+          this.favShops.forEach((v,i)=>{
+              let img=new Image();
+              img.addEventListener('load', (e) => {
+                this.$set(v, 'imgClass', img.height > img.width ? 'img-w' : 'img-h');
+              });
+             img.src=v.shopPic===null?'/static/img/zfood/logo-gray-square.jpg':v.shopPic;
+          });
+          this.favFoods.forEach((v,i)=>{
+            let img=new Image();
+            img.addEventListener('load', (e) => {
+              this.$set(v, 'imgClass', img.height > img.width ? 'img-w' : 'img-h');
+            });
+            img.src=v.foodPic===null?'/static/img/zfood/logo-gray-square.jpg':v.foodPic;
+          });
+        },
         getFav(){
           this.$http.post('zfood/favShop',{headers: {"Content-Type": "application/json"}}).then(
               response=>{
@@ -471,7 +586,10 @@
                         this.$goRoute('Login');
                         return;
                       }
-                        else {this.favFoods = response.data;this.ContentHeight('auto');}
+                        else {
+                            this.favFoods = response.data;
+                            this.FavPageInit();
+                        }
                       }
                    );
 

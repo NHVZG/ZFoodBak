@@ -4,6 +4,7 @@
       <a href=""><img class="logo" src="/static/img/zfood/logo-b.jpg" alt=""></a>
       <a v-on:click="Logout"  style="float: right;margin-top: 0.5em;margin-right:1em; color: #007bff;font-weight: 500;cursor: pointer;">退出</a>
     </div>
+
     <div class="leftBar">
       <!-- 头像 -->
       <div class="headContent">
@@ -272,7 +273,7 @@
     margin-left:19em;
     margin-top:1em;
     width: 75%;
-    height: 38em;
+    min-height: 32em;
     background-color: white;
   }
   /*基本资料*/
@@ -471,7 +472,7 @@
       },
       stateText(state){
         switch(state){
-          case '-1':return '已拒绝';
+         case '-1':return '已拒绝';
          case '0':return '已完成';
          case '1':return '正在配送';
          case '2':return '等待配送';
