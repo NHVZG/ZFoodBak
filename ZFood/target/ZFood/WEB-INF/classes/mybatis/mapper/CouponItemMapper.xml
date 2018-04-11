@@ -158,4 +158,13 @@ ORDER BY state desc,endTime asc;
        )
      </foreach>
   </insert>
+
+  <update id="setCouponItemListState" parameterType="java.util.List">
+    update couponitem set
+    `state`=0
+    where
+    <foreach collection="list" separator="or" item="item" index="index" >
+      coupon_item_id=#{item.couponItemId}
+    </foreach>
+  </update>
 </mapper>

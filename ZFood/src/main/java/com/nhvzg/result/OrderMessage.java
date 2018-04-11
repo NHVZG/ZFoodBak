@@ -23,6 +23,8 @@ public class OrderMessage {
     private String courierId;
     private Integer score;
     private String state;
+    private Double sendprice;
+    private Double preferential;
     //OrderItem
     private List<OrderItem>orderItems;
    /* private String orderItemId;
@@ -37,6 +39,22 @@ public class OrderMessage {
     private String comment;
     //Courier
     private String courierName;
+
+    public Double getSendprice() {
+        return sendprice;
+    }
+
+    public void setSendprice(Double sendprice) {
+        this.sendprice = sendprice;
+    }
+
+    public Double getPreferential() {
+        return preferential;
+    }
+
+    public void setPreferential(Double preferential) {
+        this.preferential = preferential;
+    }
 
     public String getComment() {
         return comment;

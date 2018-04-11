@@ -14,10 +14,12 @@
     <result column="courier_id" property="courierId" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="sendPrice" property="sendprice" jdbcType="DOUBLE" />
+    <result column="preferential" property="preferential" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
-    order_id, shop_id, user_id, price, orderTime, receiverName, address, phone, remark,
-    courier_id, state, score
+    order_id, shop_id, user_id, price, orderTime, receiverName, address, phone, remark, 
+    courier_id, state, score, sendPrice,`preferential`
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -33,13 +35,13 @@
     insert into `order` (order_id, shop_id, user_id,
       price, orderTime, receiverName, 
       address, phone, remark, 
-      courier_id, state, score
-      )
+      courier_id, state, score, 
+      sendPrice,preferential)
     values (#{orderId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
       #{price,jdbcType=DOUBLE}, #{ordertime,jdbcType=VARCHAR}, #{receivername,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{courierId,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}
-      )
+      #{courierId,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
+      #{sendprice,jdbcType=DOUBLE},#{preferential,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.nhvzg.entity.Order" >
     insert into `order`
@@ -80,6 +82,12 @@
       <if test="score != null" >
         score,
       </if>
+      <if test="sendprice != null" >
+        sendPrice,
+      </if>
+      <if test="preferential !=null">
+        preferential,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="orderId != null" >
@@ -117,6 +125,12 @@
       </if>
       <if test="score != null" >
         #{score,jdbcType=INTEGER},
+      </if>
+      <if test="sendprice != null" >
+        #{sendprice,jdbcType=DOUBLE},
+      </if>
+      <if test="preferential !=null">
+        #{preferential,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -156,6 +170,12 @@
       <if test="score != null" >
         score = #{score,jdbcType=INTEGER},
       </if>
+      <if test="sendprice != null" >
+        sendPrice = #{sendprice,jdbcType=DOUBLE},
+      </if>
+      <if test="preferential !=null">
+        #{preferential,jdbcType=DOUBLE},
+      </if>
     </set>
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
@@ -171,7 +191,9 @@
       remark = #{remark,jdbcType=VARCHAR},
       courier_id = #{courierId,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
-      score = #{score,jdbcType=INTEGER}
+      score = #{score,jdbcType=INTEGER},
+      sendPrice = #{sendprice,jdbcType=DOUBLE},
+      preferential=#{preferential,jdbcType=DOUBLE}
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
 
@@ -179,7 +201,6 @@
     select * from `order`
     where user_id = #{userId,jdbcType=VARCHAR}
   </select>
-
 
   <resultMap id="OrderMsg" type="com.nhvzg.result.OrderMessage">
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
@@ -194,6 +215,8 @@
     <result column="courier_id" property="courierId" jdbcType="VARCHAR" />
     <result column="score" property="score" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="sendPrice" property="sendprice" jdbcType="DOUBLE" />
+    <result column="preferential" property="preferential" jdbcType="DOUBLE" />
 
     <result column="shopName" property="shopName" jdbcType="VARCHAR" />
     <result column="headpic" property="headPic" jdbcType="VARCHAR" />
@@ -218,34 +241,33 @@
     <result column="unitPrice" property="unitprice" jdbcType="DOUBLE" />
     <result column="num" property="num" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="packPrice" property="packprice" jdbcType="DOUBLE"/>
   </resultMap>
 
   <select id="selectOrderItem" parameterType="java.lang.String" resultType="com.nhvzg.entity.OrderItem" resultMap="OrderMsgItem">
     select * from `orderitem`
     where order_id = #{order_id,jdbcType=VARCHAR};
   </select>
+
   <select id="getOrderMsgByUser" resultMap="OrderMsg" parameterType="java.lang.String">
-
-
-		select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right  join
-	(select os.*,c.`name` as couriername from courier c
-		right JOIN
-		(SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and o.user_id=#{userId,jdbcType=VARCHAR}) os
-		on c.courier_id=os.courier_id
-	)cosh
-	on cosh.order_id=comy.order_id ORDER BY orderTime desc;
+    select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right  join
+    (select os.*,c.`name` as couriername from courier c
+    right JOIN
+    (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and o.user_id=#{userId,jdbcType=VARCHAR}) os
+    on c.courier_id=os.courier_id
+    )cosh
+    on cosh.order_id=comy.order_id ORDER BY orderTime desc;
   </select>
-  
+
   <select id="getShopOrderCurrent" resultMap="OrderMsg" parameterType="java.lang.String">
-		select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right join
-	(select os.*,c.`name` as couriername from courier c
-		right JOIN
-		(SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and s.shop_id=#{shopId,jdbcType=VARCHAR} and o.state!='0' and o.state!='-1' and o.state!='5') os
-		on c.courier_id=os.courier_id
-	)cosh
-	on cosh.order_id=comy.order_id ORDER BY cosh.state desc;
+    select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right join
+    (select os.*,c.`name` as couriername from courier c
+    right JOIN
+    (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and s.shop_id=#{shopId,jdbcType=VARCHAR} and o.state!='0' and o.state!='-1' and o.state!='5') os
+    on c.courier_id=os.courier_id
+    )cosh
+    on cosh.order_id=comy.order_id ORDER BY cosh.state desc;
   </select>
-
 
   <select id="getShopOrderHistory" resultMap="OrderMsg" parameterType="java.lang.String">
     select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right join
@@ -257,15 +279,14 @@
     on cosh.order_id=comy.order_id ORDER BY orderTime desc;
   </select>
 
-
   <select id="getShoppingCart" parameterType="java.lang.String" resultMap="OrderMsg">
     select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right  join
-      (select os.*,c.`name` as couriername from courier c
-        right JOIN
-        (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and o.user_id=#{userId,jdbcType=VARCHAR} and o.state='5') os
-          on c.courier_id=os.courier_id
-      )cosh
-        on cosh.order_id=comy.order_id ORDER BY orderTime desc;
+    (select os.*,c.`name` as couriername from courier c
+    right JOIN
+    (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and o.user_id=#{userId,jdbcType=VARCHAR} and o.state='5') os
+    on c.courier_id=os.courier_id
+    )cosh
+    on cosh.order_id=comy.order_id ORDER BY orderTime desc;
   </select>
 
   <select id="getShoppingCartByShop" resultMap="OrderMsg" parameterType="java.util.HashMap">
@@ -275,11 +296,11 @@
   <update id="updateOrderItemNum" parameterType="java.util.List">
     update `orderitem`
     <trim prefix="set" suffixOverrides=",">
-    <trim prefix="`num`= case" suffix="end,">
-      <foreach collection="list" item="i" index="index">
-        <if test="i.num!=null">when order_item_id=#{i.orderItemId} then #{i.num}</if>
-      </foreach>
-    </trim>
+      <trim prefix="`num`= case" suffix="end,">
+        <foreach collection="list" item="i" index="index">
+          <if test="i.num!=null">when order_item_id=#{i.orderItemId} then #{i.num}</if>
+        </foreach>
+      </trim>
     </trim>
     where
     <foreach collection="list" separator="or" item="item" index="index" >
@@ -288,7 +309,7 @@
   </update>
 
   <insert id="addOrderItem" parameterType="java.util.List">
-    insert into  `orderitem` (`order_item_id`,`food_id`,`foodName`,`unitPrice`,`num`,`order_id`) VALUES
+    insert into  `orderitem` (`order_item_id`,`food_id`,`foodName`,`unitPrice`,`num`,`order_id`,`packPrice`) VALUES
     <foreach collection="list" item="item" index="index" separator=",">
       (
       #{item.orderItemId,jdbcType=VARCHAR},
@@ -296,22 +317,37 @@
       #{item.foodname,jdbcType=VARCHAR},
       #{item.unitprice,jdbcType=DOUBLE},
       #{item.num,jdbcType=INTEGER},
-      #{item.orderId,jdbcType=VARCHAR}
+      #{item.orderId,jdbcType=VARCHAR},
+      #{item.packprice,jdbcType=DOUBLE}
       )
     </foreach>
   </insert>
 
   <update id="updateOrderPrice" parameterType="java.lang.String">
     update `order` set price=(
-      select SUM(oio.price) as sumPrice from(
-                                              select oi.unitPrice*oi.num as price from `order` o RIGHT JOIN `orderitem` oi on o.order_id=oi.order_id WHERE o.order_id=#{orderId,jdbcType=VARCHAR}
-                                            )oio
+    select SUM(oio.price) as sumPrice from(
+    select oi.unitPrice*oi.num as price from `order` o RIGHT JOIN `orderitem` oi on o.order_id=oi.order_id WHERE o.order_id=#{orderId,jdbcType=VARCHAR}
+    )oio
     ) WHERE order_id=#{orderId,jdbcType=VARCHAR}
   </update>
-<!--
-    select os.*,c.`name` as couriername from courier c
-		INNER JOIN
-		(SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id AND o.user_id=#{userId,jdbcType=VARCHAR}) os
-		on c.courier_id=os.courier_id
--->
+
+  <update id="commitOrderState" parameterType="com.nhvzg.result.OrderMessage">
+    update `order` set
+      price = #{price,jdbcType=DOUBLE},
+      orderTime = #{orderTime,jdbcType=VARCHAR},
+      receiverName = #{receiverName,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      sendPrice = #{sendprice,jdbcType=DOUBLE},
+      preferential=#{preferential,jdbcType=DOUBLE}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <!--
+      select os.*,c.`name` as couriername from courier c
+          INNER JOIN
+          (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id AND o.user_id=#{userId,jdbcType=VARCHAR}) os
+          on c.courier_id=os.courier_id
+  -->
 </mapper>

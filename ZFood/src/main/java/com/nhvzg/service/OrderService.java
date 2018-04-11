@@ -1,5 +1,6 @@
 package com.nhvzg.service;
 
+import com.nhvzg.dao.OrderItemMapper;
 import com.nhvzg.dao.OrderMapper;
 import com.nhvzg.entity.Order;
 import com.nhvzg.entity.OrderItem;
@@ -20,6 +21,8 @@ import java.util.Map;
 public class OrderService {
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private OrderItemMapper itemMapper;
 
     public List<Order> getOrderByUser(Order order){
         return orderMapper.getOrderByUser(order.getUserId());
@@ -29,6 +32,7 @@ public class OrderService {
         return orderMapper.getShoppingCart(userId);
     }
 
+    //往购物车里添加
     public void addShoppingCartByShop(String shopId,String userId,List<OrderItem> items){
         Map map=new HashMap();
         map.put("userId",userId);
@@ -78,6 +82,28 @@ public class OrderService {
             orderMapper.insert(order);
             orderMapper.addOrderItem(items);
         }
+    }
+
+    //删除已有订单项及订单
+    public void removeShoppingCartItem(String orderItemId,String orderId){
+        itemMapper.deleteByPrimaryKey(orderItemId);
+        if(orderId!=null&&!orderId.equals("")){
+            orderMapper.deleteByPrimaryKey(orderId);
+        }
+    }
+
+    //改变订单项数量
+    public void changOrderItemNum(String orderItemId,int num){
+        Map map=new HashMap();
+        map.put("orderItemId",orderItemId);
+        map.put("num",num);
+        itemMapper.changNum(map);
+    }
+
+    //提交订单
+    public void commitOrder(OrderMessage order){
+        order.setState("4");
+        orderMapper.commitOrderState(order);
     }
 
     public void addOrder(Order order){

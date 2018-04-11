@@ -2,6 +2,8 @@ package com.nhvzg.dao;
 
 import com.nhvzg.entity.OrderItem;
 
+import java.util.Map;
+
 public interface OrderItemMapper {
     int deleteByPrimaryKey(String orderItemId);
 
@@ -14,4 +16,6 @@ public interface OrderItemMapper {
     int updateByPrimaryKeySelective(OrderItem record);
 
     int updateByPrimaryKey(OrderItem record);
+
+    void changNum(Map map);
 }

@@ -1,7 +1,11 @@
 package com.nhvzg.tools;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -24,5 +28,21 @@ public class JsonTools{
     public static String GetJson(Object o) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(o);
+    }
+
+    public static  <T>List GetPartObjectToList(String json,Class<T> t,String partName) throws IOException {
+        JsonFactory factory = mapper.getFactory();
+        JsonParser parser = factory.createParser(json);
+        ObjectNode root = mapper.readTree(parser);
+        JsonNode node=root.get(partName);
+        return GetList(node.toString(),t);
+    }
+
+    public static<T> T GetPartObjectToObject(String json,Class<T> t,String partName) throws IOException {
+        JsonFactory factory = mapper.getFactory();
+        JsonParser parser = factory.createParser(json);
+        ObjectNode root = mapper.readTree(parser);
+        JsonNode node=root.get(partName);
+        return GetObject(node.toString(),t);
     }
 }

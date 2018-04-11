@@ -13,6 +13,8 @@ public class OrderItem {
 
     private String orderId;
 
+    private Double packprice;
+
     public String getOrderItemId() {
         return orderItemId;
     }
@@ -59,5 +61,13 @@ public class OrderItem {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId == null ? null : orderId.trim();
+    }
+
+    public Double getPackprice() {
+        return packprice;
+    }
+
+    public void setPackprice(Double packprice) {
+        this.packprice = packprice;
     }
 }

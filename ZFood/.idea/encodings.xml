@@ -4,6 +4,8 @@
     <file url="file://$PROJECT_DIR$/../../Intellij/Vue/vue-router/RouterBasic/package.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources/log4j.properties" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources/mybatis" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/OrderItemMapper.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/OrderMapper.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/mapper/UserMapper.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../ZFoodFront/ZFoodFront/config/index.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../ZFoodFront/ZFoodFront/src/App.vue" charset="UTF-8" />

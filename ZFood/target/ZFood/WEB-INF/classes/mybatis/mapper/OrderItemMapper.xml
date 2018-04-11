@@ -8,9 +8,10 @@
     <result column="unitPrice" property="unitprice" jdbcType="DOUBLE" />
     <result column="num" property="num" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="packPrice" property="packprice" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
-    order_item_id, food_id, foodName, unitPrice, num, order_id
+    order_item_id, food_id, foodName, unitPrice, num, order_id, packPrice
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -24,11 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.nhvzg.entity.OrderItem" >
     insert into orderitem (order_item_id, food_id, foodName, 
-      unitPrice, num, order_id
-      )
+      unitPrice, num, order_id, 
+      packPrice)
     values (#{orderItemId,jdbcType=VARCHAR}, #{foodId,jdbcType=VARCHAR}, #{foodname,jdbcType=VARCHAR}, 
-      #{unitprice,jdbcType=DOUBLE}, #{num,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}
-      )
+      #{unitprice,jdbcType=DOUBLE}, #{num,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, 
+      #{packprice,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.nhvzg.entity.OrderItem" >
     insert into orderitem
@@ -51,6 +52,9 @@
       <if test="orderId != null" >
         order_id,
       </if>
+      <if test="packprice != null" >
+        packPrice,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="orderItemId != null" >
@@ -70,6 +74,9 @@
       </if>
       <if test="orderId != null" >
         #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="packprice != null" >
+        #{packprice,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -91,6 +98,9 @@
       <if test="orderId != null" >
         order_id = #{orderId,jdbcType=VARCHAR},
       </if>
+      <if test="packprice != null" >
+        packPrice = #{packprice,jdbcType=DOUBLE},
+      </if>
     </set>
     where order_item_id = #{orderItemId,jdbcType=VARCHAR}
   </update>
@@ -100,7 +110,14 @@
       foodName = #{foodname,jdbcType=VARCHAR},
       unitPrice = #{unitprice,jdbcType=DOUBLE},
       num = #{num,jdbcType=INTEGER},
-      order_id = #{orderId,jdbcType=VARCHAR}
+      order_id = #{orderId,jdbcType=VARCHAR},
+      packPrice = #{packprice,jdbcType=DOUBLE}
     where order_item_id = #{orderItemId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="changNum" parameterType="java.util.Map">
+    update orderitem
+    set num = #{num,jdbcType=INTEGER}
+    where order_item_id= #{orderItemId,jdbcType=VARCHAR}
   </update>
 </mapper>

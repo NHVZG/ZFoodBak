@@ -3,8 +3,11 @@ package com.nhvzg.controller.order;
 import com.nhvzg.entity.Order;
 import com.nhvzg.entity.OrderItem;
 import com.nhvzg.result.OrderMessage;
+import com.nhvzg.result.UserCouponMsg;
+import com.nhvzg.service.CouponItemService;
 import com.nhvzg.service.OrderService;
 import com.nhvzg.tools.JsonTools;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,8 @@ import java.util.Map;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private CouponItemService couponItemService;
 
     @PostMapping("/order/user")
     //userId
@@ -56,12 +61,22 @@ public class OrderController {
         orderService.addShoppingCartByShop(data.getShopId(),(String)request.getAttribute("userId"),data.getOrderItems());
     }
     @PostMapping("/shoppingCart/edit")
-    public void editShoppingCart(@RequestBody String json,HttpServletRequest request){
-
+    public void editShoppingCart(@RequestBody String json,HttpServletRequest request) throws IOException {
+        OrderItem orderItem=JsonTools.GetObject(json,OrderItem.class);
+        orderService.changOrderItemNum(orderItem.getOrderItemId(),orderItem.getNum());
     }
     @PostMapping("/shoppingCart/del")
-    public void delShoppingCart(@RequestBody String json,HttpServletRequest request){
-
+    public void delShoppingCart(@RequestBody String json,HttpServletRequest request) throws IOException {
+        Map map=JsonTools.GetObject(json,Map.class);
+        orderService.removeShoppingCartItem((String) map.get("orderItemId"), (String) map.get("orderId"));
+    }
+    @PostMapping("/shoppingCart/commit")
+    public void commitOrder(@RequestBody String json,HttpServletRequest request) throws IOException {
+        //List orderItems=JsonTools.GetPartObjectToList(json,OrderMessage.class,"orderItems");
+        List couponsItems=JsonTools.GetPartObjectToList(json,UserCouponMsg.class,"couponsItems");
+        OrderMessage order=JsonTools.GetPartObjectToObject(json, OrderMessage.class,"order");
+        couponItemService.setCouponItemListState(couponsItems);
+        orderService.commitOrder(order);
     }
 
 

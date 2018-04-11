@@ -163,11 +163,12 @@
   </update>
 
   <select id="getCountByShopId" resultType="java.lang.Integer" parameterType="java.lang.String">
-    select count(coupon_id) from coupon where shop_id=#{shopId,jdbcType=VARCHAR}
+    select count(coupon_id) from coupon where shop_id=#{shopId,jdbcType=VARCHAR} and `usage`=0
   </select>
 
+    <!--废弃-->
   <select id="getShopCoupon" resultMap="BaseResultMap">
-    select * from coupon where  shop_id=#{shopId,jdbcType=VARCHAR}
+    select * from coupon where  shop_id=#{shopId,jdbcType=VARCHAR} and `usage`=0
   </select>
 
   <resultMap id="CouponMsg" type="com.nhvzg.result.ShopCouponMsg">
@@ -187,7 +188,7 @@
   </resultMap>
 
   <select id="getShopCouponMsg" resultMap="CouponMsg">
-      select c.*,f.name as foodName from coupon c left join food f on  c.extra=f.food_id where c.shop_id=#{shopId,jdbcType=VARCHAR}
+      select c.*,f.name as foodName from coupon c left join food f on  c.extra=f.food_id where c.shop_id=#{shopId,jdbcType=VARCHAR} and `usage`=0
   </select>
 
   <update id="updateCouponList" parameterType="java.util.List">
@@ -264,16 +265,31 @@
         </foreach>
     </insert>
 
-    <delete id="deleteCouponList" parameterType="java.util.List">
+    <!--删除优惠券改为更改状态标识-->
+    <update id="deleteCouponList" parameterType="java.util.List">
+        update coupon
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="`usage`= case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.usage!=null">when coupon_id=#{i.couponId} then #{i.usage}</if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="item" index="index" >
+            coupon_id=#{item.couponId}
+        </foreach>
+    </update>
+    <!--<delete id="deleteCouponList" parameterType="java.util.List">
         delete from coupon where coupon_id in
         <foreach item="item" collection="list" index="index" open="(" separator="," close=")">
             #{item.couponId}
         </foreach>
-    </delete>
+    </delete>-->
 
     <select id="getShopCouponWithUser" parameterType="java.util.Map" resultMap="CouponMsg">
         select c.*,ci.user_id from
-        (select * from coupon where shop_id=#{shopId,jdbcType=VARCHAR}) c
+        (select * from coupon where shop_id=#{shopId,jdbcType=VARCHAR} and `usage`=0) c
         left join
         (select * from couponitem where user_id=#{userId,jdbcType=VARCHAR})ci
         on c.coupon_id=ci.couponId;

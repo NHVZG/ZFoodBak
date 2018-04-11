@@ -25,6 +25,18 @@ public class Order {
 
     private Integer score;
 
+    private Double sendprice;
+
+    private Double preferential;
+
+    public Double getPreferential() {
+        return preferential;
+    }
+
+    public void setPreferential(Double preferential) {
+        this.preferential = preferential;
+    }
+
     public String getOrderId() {
         return orderId;
     }
@@ -119,5 +131,13 @@ public class Order {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Double getSendprice() {
+        return sendprice;
+    }
+
+    public void setSendprice(Double sendprice) {
+        this.sendprice = sendprice;
     }
 }

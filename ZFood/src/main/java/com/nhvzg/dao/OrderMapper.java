@@ -41,4 +41,6 @@ public interface OrderMapper {
     void addOrderItem(List list);
 
     void updateOrderPrice(String orderId);
+
+    void commitOrderState(OrderMessage order);
 }

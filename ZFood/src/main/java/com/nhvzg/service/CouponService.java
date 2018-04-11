@@ -47,6 +47,10 @@ public class CouponService {
     }
 
     public void deleteList(List list){
+        for (Object aList : list) {
+            ShopCouponMsg shopCouponMsg = (ShopCouponMsg) aList;
+            shopCouponMsg.setUsage(1);
+        }
         mapper.deleteCouponList(list);
     }
 
