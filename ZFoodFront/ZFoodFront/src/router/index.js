@@ -8,6 +8,7 @@ import CouponTable from '@/components/CouponTable'
 import UserManage from '@/components/UserManage'
 import ShopIndex from '@/components/ShopIndex'
 import PayOff from '@/components/PayOff'
+import CourierManage from '@/components/CourierManage'
 import Header from '@/components/Header'
 import Index from '@/components/Index'
 import Test from '@/components/test'
@@ -80,6 +81,11 @@ export default new Router({
       path:'/Header',
       name:'Header',
       component:Header
+    },
+    {
+      path:'/CourierManage',
+      name:'CourierManage',
+      component:CourierManage
     }
   ]
 })

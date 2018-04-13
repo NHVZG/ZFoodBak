@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="header">
+   <!-- <div class="header">
       <a href=""><img class="logo" src="/static/img/zfood/logo-b.jpg" alt=""></a>
       <a v-on:click="Logout"  style="float: right;margin-top: 0.5em;margin-right:1em; color: #007bff;font-weight: 500;cursor: pointer;">退出</a>
-    </div>
+    </div>-->
+    <my-header :userState="1"></my-header>
 
     <div class="leftBar">
       <!-- 头像 -->
@@ -47,7 +48,7 @@
             <div class="lineText">商家地址:</div><input class="form-control editText" type="text" name="shopAddress" v-model="shopMsg.address"><br>
             <div class="lineText">商家电话:</div><input class="form-control editText" type="text" name="shopPhone" v-model="shopMsg.phone"><br>
             <div class="lineText">营业额:</div><span style="color: red;font-size: 2em;">{{shopMsg.income}}￥</span>
-          <div><input class="btn subButton" style="width: 8em; margin-top: 2em;"  type="submit" value="保存" @click="SubmitShoprMsg"></div>
+          <div><input class="btn subButton" style="width: 8em; margin-top: 2em;"   value="保存" @click="SubmitShoprMsg"></div><!--type="submit"-->
           </div>
         </form>
       </div>
@@ -132,7 +133,7 @@
 
                   </span>
                   <span style="margin-left: 30px;">总额:{{v.price}}</span>
-                  <span style="margin-left: 30px;">备注:{{v.remark}}</span>
+                  <div style="display:inline-block;margin-left: 30px;max-width:160px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;vertical-align: text-top;">备注:{{v.remark}}</div>
                 </div>
               </div>
               <div :id="v.orderId" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
@@ -172,7 +173,7 @@
                   <span style="margin-left: 30px;">备注:{{v.remark}}</span>
                 </div>
               </div>
-              <div :id="v.orderId" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div :id="v.orderId" class="collapse" aria-labelledby="headingOne" data-parent="#accordion1">
                 <div class="card-body">
                   <div v-for="(oi,item) in v.orderItems">{{oi.foodname}}&nbsp;&nbsp;{{oi.unitprice}}￥&times;{{oi.num}}</div>
                 </div>
@@ -338,6 +339,7 @@
 </style>
 
 <script>
+  import MyHeader from '../components/Header.vue';
   import FoodTable from '../components/FoodTable.vue';
   import CouponTable from '../components/CouponTable.vue';
   import VueDatepickerLocal from 'vue-datepicker-local'
@@ -366,6 +368,7 @@
             }
         },
     components:{
+      MyHeader,
       FoodTable,
       CouponTable,
       VueDatepickerLocal

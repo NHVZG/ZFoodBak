@@ -11,10 +11,10 @@ import VueAxios from 'vue-axios'
 import './lib/bootstrap/css/bootstrap.css'
 import './lib/bootstrap/js/bootstrap.bundle'
 import './lib/bootstrap/js/bootstrap'
-import rate from 'vue-rate';
 import $ from 'jquery'
+/*import rate from 'vue-rate';*/
 
-Vue.use(rate);
+/*Vue.use(rate);*/
 Vue.prototype.$http = axios;
 //Vue.prototype.$zajax=ZFoodAjax;
 
@@ -61,7 +61,7 @@ Vue.prototype.$getCookieData=function (key) {
 };
 Vue.prototype.$checkUserState=function () {
   let state=this.$getTokenData('state');
-  let list=['/UserManage','/ShopManage','/UserManage','/UserManage'];
+  let list=['/UserManage','/ShopManage','/CourierManage','/UserManage'];
   return list[state];
 };
 Vue.prototype.$goRoute = function (index) {

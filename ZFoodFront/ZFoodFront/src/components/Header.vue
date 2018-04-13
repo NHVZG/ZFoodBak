@@ -1,11 +1,11 @@
 <template>
 
+<div>
   <div class="header">
-    <a href=""><img class="logo" src="/static/img/zfood/logo.jpg" alt="" ></a><!--动态路由参数需要以/开始-->
+    <a @click="ToIndex" style="cursor: pointer;"><img class="logo" :src="logoImg[userState]" alt="" ></a><!--动态路由参数需要以/开始     src="/static/img/zfood/logo.jpg"-->
     <div class="headerRightButton">
 
-
-      <div style="vertical-align:bottom;padding-bottom:0.7em;display: inline-block;margin-left: 0.15em;width: 3.5em;">
+      <div style="vertical-align:bottom;padding-bottom:0.7em;display: inline-block;margin-left: 0.15em;width: 3.5em;" v-if="userState===0">
         <a @click="ToPayOff" style="cursor: pointer"><img style="width: 2.5em;" src="/static/img/zfood/cart-8x -gray.png"></a>
       </div>
 
@@ -17,7 +17,7 @@
           <a class="dropdown-item" @click="ToLogin">登陆</a>
         </div>
         <div v-else>
-          <a class="dropdown-header" style="color: #F68447;font-weight: 600;">{{userName}}</a>
+          <a class="dropdown-header" style="font-weight: 600;" :style="'color:'+userNameColor[userState]">{{userName}}</a>
           <a class="dropdown-item" @click="ToManage">我的资料</a>
           <a class="dropdown-item" @click="ToLogOut">退出</a>
         </div>
@@ -26,6 +26,7 @@
 
     </div>
   </div>
+</div>
 
 </template>
 
@@ -61,18 +62,30 @@
 
 <script>
     export default{
+        props:{
+            userState:[Number]
+        },
         data () {
             return {
+              logoImg:[
+                  '/static/img/zfood/logo.jpg',
+                  '/static/img/zfood/logo-b.jpg',
+                  '/static/img/zfood/logo-g.jpg'
+              ],
               userHeadImgStyle: {
                 headImgSrc: this.$getLocalStorage('headImg') === '' || this.$getLocalStorage('headImg') === null ? '/static/img/zfood/logo-gray-square.jpg' : this.$getLocalStorage('headImg'),
-                headImgClass: ''
+                headImgClass: '',
               },
+              userNameColor:['#F68447','#007bff','#62c54e'],
               userName: '',
               menuType: this.$getLocalStorage('userId') === null,
               userId:this.$getLocalStorage('userId'),
             }
         },
       methods:{
+        ToIndex(){
+          this.$goRoute('/Index');
+        },
         ToManage(){
           this.$goRoute('/UserManage');
         },

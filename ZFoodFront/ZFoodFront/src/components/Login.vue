@@ -216,6 +216,7 @@
         var formData = JSON.stringify(this.loginForm);
         this.$http.post('/zfood/login/in',formData,{headers: {"Content-Type": "application/json"}}).then(
             response => {
+              console.log(response.data);
               if(response.data.search("success")!==-1) {
                 var j=response.headers.token.split('.');
                 let Base64 = require('js-base64').Base64;
@@ -245,6 +246,25 @@
                         headImg:j['headImg'],
                         userName:j['userName'],
                         score:j['score']
+                      }
+                    });
+                }else if(json['X-data']['user']['state']==='2') {
+                  let s=response.data.replace('success','');
+                  let j=JSON.parse(s);
+                  this.$setLocalStorage('courierId', j['courierId']);
+                  this.$setLocalStorage('headImg', j['headImg']);
+                  this.$router.push(
+                    {
+                      name: 'CourierManage',
+                      params: {
+                        courierId:j['courierId'],
+                        courierName:j['courierName'],
+                        phone:j['phone'],
+                        score:j['score'],
+                        userName:j['userName'],
+                        income:j['income'],
+                        rateCount:j['rateCount'],
+                        password:j['password']
                       }
                     });
                 }

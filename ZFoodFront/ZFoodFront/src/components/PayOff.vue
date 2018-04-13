@@ -45,7 +45,7 @@
             </div>
           </div>
         </div>-->
-
+      <MyHeader :userState="0"></MyHeader>
       <div class="orderBlock" v-for="(v,i) in orderList">
 
         <div class="orderBlockHeader">{{v.shopName}}</div>
@@ -97,8 +97,8 @@
 
           <div style="margin-left: 2em;color:#fb8848; ">备注:</div>
           <div>
-            <input v-model="orderMark" class="form-control" style="width: 70%;margin-left:2em;display: inline-block;"/>
-            <button style="display: inline-block;color: white;background-color: #fb8848;float: right;margin-right: 1em;" class="btn" @click="ToPay(i)" data-toggle="modal" data-target="#MyModal">付款</button>
+            <input v-model="v.remark" class="form-control" style="width: 70%;margin-left:2em;display: inline-block;"/>
+            <button style="display: inline-block;color: white;background-color: #fb8848;float: right;margin-right: 1em;" class="btn" @click="ToPay(i)" data-toggle="modal" data-target="#MyModals">付款</button>
           </div>
         </div>
 
@@ -152,7 +152,7 @@
         </div>
       </div>
 
-      <div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal fade" id="MyModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" >
           <div class="modal-content" style="min-height: 35em;">
             <div class="modal-header" style="background-color: #e9e9e9">
@@ -249,6 +249,7 @@
 </style>
 
 <script>
+  import MyHeader from '../components/Header.vue';
     export default{
         data () {
             return {
@@ -275,6 +276,9 @@
               }
             }
         },
+      components:{
+        MyHeader
+      },
       methods:{
         CouponImgStyle(state){
             switch (state){
@@ -398,16 +402,18 @@
               coupons.push(this.couponList[key]);
             }
           }
-          this.orderList[this.currentOrderIndex]['sendprice']=this.sendprice;
+          this.orderList[this.currentOrderIndex]['sendprice']=this.sendPrice;
           this.orderList[this.currentOrderIndex]['price']=this.amount;
           this.orderList[this.currentOrderIndex]['preferential']=this.preferential;
           this.orderList[this.currentOrderIndex]['orderTime']=new Date();
           this.orderList[this.currentOrderIndex]['receiverName']=this.userMsg['name'];
           this.orderList[this.currentOrderIndex]['address']=this.userMsg['address'];
           this.orderList[this.currentOrderIndex]['phone']=this.userMsg['phone'];
-          this.orderList[this.currentOrderIndex]['remark']=this.orderMark;
           let data = JSON.stringify({'couponsItems': coupons, 'order': this.orderList[this.currentOrderIndex]});
           this.$http.post('/zfood/shoppingCart/commit',data,{headers: {"Content-Type": "application/json"}});
+          this.orderList.splice(this.currentOrderIndex,1);
+          $('#MyModals').modal('hide');
+          alert('下单成功');
         }
       },
       mounted(){
