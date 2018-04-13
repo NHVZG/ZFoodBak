@@ -13,6 +13,10 @@ public class Courier {
 
     private Integer state;
 
+    private Integer ratecount;
+
+    private String userId;
+
     public String getCourierId() {
         return courierId;
     }
@@ -59,5 +63,21 @@ public class Courier {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Integer getRatecount() {
+        return ratecount;
+    }
+
+    public void setRatecount(Integer ratecount) {
+        this.ratecount = ratecount;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 }

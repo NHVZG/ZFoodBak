@@ -3,6 +3,7 @@ package com.nhvzg.service;
 import com.nhvzg.dao.CommentMapper;
 import com.nhvzg.dao.OrderItemMapper;
 import com.nhvzg.dao.OrderMapper;
+import com.nhvzg.dao.ShopMapper;
 import com.nhvzg.entity.Comment;
 import com.nhvzg.entity.Order;
 import com.nhvzg.entity.OrderItem;
@@ -27,6 +28,8 @@ public class OrderService {
     private OrderItemMapper itemMapper;
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private ShopMapper shopMapper;
 
     public List<OrderMessage>getShoppingCart(String userId){
         return orderMapper.getShoppingCart(userId);
@@ -106,10 +109,29 @@ public class OrderService {
         orderMapper.commitOrderState(order);
     }
 
-    public void editOrderCourier(Order order){
+    //更改配送员
+    public boolean editOrderCourier(Order order){
         Order o=orderMapper.selectByPrimaryKey(order.getOrderId());
+        if(o.getCourierId()!=null&&!o.getCourierId().equals("")){//如果改单已被接收 则返回false
+            return false;
+        }
         o.setCourierId(order.getCourierId());
         orderMapper.updateByPrimaryKey(o);
+        editOrderState(order);
+        return true;
+    }
+
+    //获取配送员已接订单
+    public List<OrderMessage>getCourierCurrentOrders(String courierId){
+        return orderMapper.getCourierCurrentOrders(courierId);
+    }
+
+    public List<OrderMessage> getCourierReceiveOrder(){
+        return orderMapper.getCourierReceiveOrder();
+    }
+
+    public List<OrderMessage>getCourierHistoryOrder(String courierId){
+        return orderMapper.getCourierHistoryOrder(courierId);
     }
 
     public void editOrderState(Order order){
@@ -119,15 +141,21 @@ public class OrderService {
     }
 
     public void saveComment(OrderMessage orderMessage){
-        Comment comment=new Comment();
-        comment.setUserId(orderMessage.getUserId());
-        comment.setCommentId(UUIDTools.getPrimaryKey());
-        comment.setOrderId(orderMessage.getOrderId());
-        comment.setComment(orderMessage.getComment());
-        comment.setSource(orderMessage.getScore());
-        commentMapper.insert(comment);
+        List list=commentMapper.selectOrder(orderMessage.getOrderId());
+        if(list.size()==0) {
+            Comment comment = new Comment();
+            comment.setUserId(orderMessage.getUserId());
+            comment.setCommentId(UUIDTools.getPrimaryKey());
+            comment.setOrderId(orderMessage.getOrderId());
+            comment.setComment(orderMessage.getComment());
+            comment.setSource(orderMessage.getScore());
+            commentMapper.insert(comment);//插入评论表
+        }
+       /* if(orderMessage.getScore()!=null){//更新商店评分
+            shopMapper.updateScore(orderMessage);
+        }*/
 
-        orderMapper.saveScore(orderMessage);
+        orderMapper.saveScore(orderMessage);//更新订单表
     }
 
     public List<OrderMessage> getOrderMessageByUser(Order order){
@@ -143,6 +171,17 @@ public class OrderService {
     public List<OrderMessage> getOrderHistoryByShop(Order order){
         List<OrderMessage> list =orderMapper.getShopOrderHistory(order.getShopId());
         return list;
+    }
+
+    //数据库级联删除(取消)订单
+    public void deleteOrderWithItem(String  orderId){
+        orderMapper.deleteByPrimaryKey(orderId);
+    }
+
+    //更新商店和配送员收入
+    public void updateAllIncome(Order order){
+        orderMapper.updateShopIncome(order);
+        orderMapper.updateCourierIncome(order);
     }
 
     @Deprecated

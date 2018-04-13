@@ -10,9 +10,10 @@
     <result column="score" jdbcType="INTEGER" property="score" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="headPic" jdbcType="VARCHAR" property="headpic" />
+    <result column="orderCount" jdbcType="VARCHAR" property="orderCount" />
   </resultMap>
   <sql id="Base_Column_List">
-    shop_id, shopName, income, phone, address, score, user_id, headPic
+    shop_id, shopName, income, phone, address, score, user_id, headPic,orderCount
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -27,10 +28,10 @@
   <insert id="insert" parameterType="com.nhvzg.entity.Shop">
     insert into shop (shop_id, shopName, income, 
       phone, address, score, 
-      user_id, headPic)
+      user_id, headPic,orderCount)
     values (#{shopId,jdbcType=VARCHAR}, #{shopname,jdbcType=VARCHAR}, #{income,jdbcType=DOUBLE}, 
       #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
-      #{userId,jdbcType=VARCHAR}, #{headpic,jdbcType=VARCHAR})
+      #{userId,jdbcType=VARCHAR}, #{headpic,jdbcType=VARCHAR},#{orderCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.nhvzg.entity.Shop">
     insert into shop
@@ -59,6 +60,9 @@
       <if test="headpic != null">
         headPic,
       </if>
+      <if test="orderCount != null">
+        orderCount,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="shopId != null">
@@ -84,6 +88,9 @@
       </if>
       <if test="headpic != null">
         #{headpic,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCount != null">
+        #{orderCount,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -111,6 +118,9 @@
       <if test="headpic != null">
         headPic = #{headpic,jdbcType=VARCHAR},
       </if>
+      <if test="orderCount != null">
+        orderCount = #{orderCount,jdbcType=VARCHAR},
+      </if>
     </set>
     where shop_id = #{shopId,jdbcType=VARCHAR}
   </update>
@@ -122,7 +132,8 @@
       address = #{address,jdbcType=VARCHAR},
       score = #{score,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=VARCHAR},
-      headPic = #{headpic,jdbcType=VARCHAR}
+      headPic = #{headpic,jdbcType=VARCHAR},
+      orderCount= #{orderCount,jdbcType=INTEGER}
     where shop_id = #{shopId,jdbcType=VARCHAR}
   </update>
 
@@ -144,6 +155,7 @@
     <result column="headPic" property="headImg" jdbcType="VARCHAR" />
     <result column="userName" property="userName" jdbcType="VARCHAR" />
     <result column="income" property="income" jdbcType="DOUBLE" />
+    <result column="orderCount" property="orderCount" jdbcType="INTEGER" />
   </resultMap>
 
 
@@ -157,4 +169,12 @@
     set `headpic` =#{headpic,jdbcType=VARCHAR}
     where shop_id=#{shopId,jdbcType=VARCHAR}
   </update>
+
+  <update id="updateScore" parameterType="com.nhvzg.result.OrderMessage">
+    update shop SET
+      `score`=(`score`*orderCount+#{score,jdbcType=INTEGER})/(orderCount+1),
+      orderCount=orderCount+1
+    WHERE shop_id=#{shopId,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

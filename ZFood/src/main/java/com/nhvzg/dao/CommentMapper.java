@@ -2,6 +2,8 @@ package com.nhvzg.dao;
 
 import com.nhvzg.entity.Comment;
 
+import java.util.List;
+
 public interface CommentMapper {
     int deleteByPrimaryKey(String commentId);
 
@@ -14,4 +16,6 @@ public interface CommentMapper {
     int updateByPrimaryKeySelective(Comment record);
 
     int updateByPrimaryKey(Comment record);
+
+    List<Comment> selectOrder(String orderId);
 }

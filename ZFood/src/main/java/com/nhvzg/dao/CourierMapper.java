@@ -1,6 +1,7 @@
 package com.nhvzg.dao;
 
 import com.nhvzg.entity.Courier;
+import com.nhvzg.result.CourierUserMsg;
 
 import java.util.List;
 
@@ -17,5 +18,9 @@ public interface CourierMapper {
 
     int updateByPrimaryKey(Courier record);
 
-    List<Courier> getAll();
+    List getAll();
+
+    CourierUserMsg getCourierByUser(String userId);
+
+    void updateCourierBasicMsg(CourierUserMsg msg);
 }

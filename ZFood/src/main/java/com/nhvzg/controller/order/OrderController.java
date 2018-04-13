@@ -8,6 +8,7 @@ import com.nhvzg.service.CouponItemService;
 import com.nhvzg.service.OrderService;
 import com.nhvzg.tools.JsonTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,20 +80,53 @@ public class OrderController {
         }
         orderService.commitOrder(order);
     }
-
+    @PostMapping("/order/del")
+    public void delOrder(@RequestBody String json) throws IOException {//数据库级联删除订单及订单项
+        String orderId=JsonTools.GetObject(json,String.class);
+        orderService.deleteOrderWithItem(orderId);
+    }
 
     @PostMapping("/order/edit/courier")
-    //orderId courierId 更改订单的配送员
-    public void editOrderCourier(@RequestBody String json) throws IOException {
+    @Scope("prototype")
+    //orderId courierId 更改订单的配送员        配送员接单时 将订单金额加入商家
+    public boolean editOrderCourier(@RequestBody String json) throws IOException {
         Order order=JsonTools.GetObject(json,Order.class);
-        orderService.editOrderCourier(order);
+        return orderService.editOrderCourier(order);
     }
+
+    @PostMapping("/order/courier/receive")//可接订单
+    public List<OrderMessage>getCourierReceiveOrder(){
+        return orderService.getCourierReceiveOrder();
+    }
+
+    @PostMapping("/order/courier/current")//已接订单
+    public List<OrderMessage>getCourierCurrentOrder(@RequestBody String json) throws IOException {
+        String courierId=JsonTools.GetObject(json,String.class);
+        return orderService.getCourierCurrentOrders(courierId);
+    }
+
+    @PostMapping("/order/courier/history")//历史订单
+    public List<OrderMessage>getCourierHistoryOrder(@RequestBody String json) throws IOException {
+        String courierId=JsonTools.GetObject(json,String.class);
+        return orderService.getCourierHistoryOrder(courierId);
+    }
+
+    @PostMapping("/order/complete")//完成订单
+    public void completeOrder(@RequestBody String json) throws IOException {
+        Order order=JsonTools.GetObject(json,Order.class);
+        orderService.editOrderState(order);
+        orderService.updateAllIncome(order);
+    }
+
     @PostMapping("/order/edit/state")
+    @Scope("prototype")
     //orderId state 更改订单状态
     public void editOrderState(@RequestBody String json) throws IOException {
         Order order=JsonTools.GetObject(json,Order.class);
         orderService.editOrderState(order);
     }
+
+
     @PostMapping("/order/edit/comment")
     public void editOrderComment(@RequestBody String json,HttpServletRequest request) throws IOException {
        OrderMessage orderMessage=JsonTools.GetObject(json,OrderMessage.class);

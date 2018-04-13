@@ -36,10 +36,19 @@ public class OrderMessage {
     //Shop
     private String shopName;
     private String headPic;
+    private String shopAddress;//配送接单所需
     //Comment
     private String comment;
     //Courier
     private String courierName;
+
+    public String getShopAddress() {
+        return shopAddress;
+    }
+
+    public void setShopAddress(String shopAddress) {
+        this.shopAddress = shopAddress;
+    }
 
     public Integer getSendscore() {
         return sendscore;

@@ -1,6 +1,7 @@
 package com.nhvzg.controller.login;
 
 import com.nhvzg.entity.User;
+import com.nhvzg.service.CourierService;
 import com.nhvzg.service.ShopService;
 import com.nhvzg.service.UserService;
 import com.nhvzg.tools.JsonTools;
@@ -27,6 +28,8 @@ public class LoginController {
     private UserService service;
     @Autowired
     private ShopService shopService;
+    @Autowired
+    private CourierService courierService;
     @PostMapping("/login/in")
     //jsonÃ·π©name password
     public String login(HttpServletResponse httpServletResponse, @RequestBody String json, Model model, HttpSession session) throws IOException {
@@ -53,6 +56,12 @@ public class LoginController {
                 out.flush();
                 //String jsonS=JsonTools.GetJson(shopService.getShopByUser(u.getUserId()));
                 //return jsonS;
+            }else if(u.getState().equals("2")){//≈‰ÀÕ‘±
+                httpServletResponse.setCharacterEncoding("UTF-8");
+                OutputStream out = httpServletResponse.getOutputStream();
+                String jsonS=JsonTools.GetJson(courierService.getCourierByUser(u.getUserId()));
+                out.write(jsonS.getBytes("UTF-8"));
+                out.flush();
             }
             model.addAttribute("us", u);
             return "success";

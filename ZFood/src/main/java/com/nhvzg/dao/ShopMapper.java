@@ -1,6 +1,7 @@
 package com.nhvzg.dao;
 
 import com.nhvzg.entity.Shop;
+import com.nhvzg.result.OrderMessage;
 import com.nhvzg.result.ShopUserMsg;
 
 public interface ShopMapper {
@@ -19,4 +20,6 @@ public interface ShopMapper {
     ShopUserMsg getShopByUser(String userId);
 
     int updateHeadImg(Shop shop);
+
+    void updateScore(OrderMessage msg);
 }

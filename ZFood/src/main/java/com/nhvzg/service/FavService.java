@@ -56,16 +56,16 @@ public class FavService {
         foodMapper.deleteFavFoodList(list);
     }
 
+    public void removeFavFood(String favFoodId){
+        foodMapper.deleteByPrimaryKey(favFoodId);
+    }
 
     @Deprecated
     public void addFavFood(FavFood food){
         food.setFavFoodId(UUIDTools.getPrimaryKey());
         foodMapper.insert(food);
     }
-    @Deprecated
-    public void removeFavFood(String favFoodId){
-        foodMapper.deleteByPrimaryKey(favFoodId);
-    }
+
 
     @Deprecated
     public void addFavShopList(List<FavShop> list){

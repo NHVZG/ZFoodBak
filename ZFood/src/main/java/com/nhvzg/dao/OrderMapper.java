@@ -23,7 +23,7 @@ public interface OrderMapper {
     List<Order> getOrderByUser(String userId);
 
     //用户及商家获取订单
-    List<OrderMessage>getOrderMsgByUser(String userId);
+    List<OrderMessage>getOrderMsgByUser(String userId);//不包含购物车
 
     List<OrderMessage>getShopOrderCurrent(String shopId);
 
@@ -46,4 +46,16 @@ public interface OrderMapper {
 
     //评分
     void saveScore(OrderMessage orderMessage);
+
+    //配送员获取可接订单
+    List<OrderMessage>getCourierReceiveOrder();
+    //配送员获取已接订单
+    List<OrderMessage>getCourierCurrentOrders(String courierId);
+    //配送员获取当前订单
+    List<OrderMessage>getCourierHistoryOrder(String courierId);
+    //更新商店收入
+    void updateShopIncome(Order order);
+    //更新配送员收入
+    void updateCourierIncome(Order order);
+
 }

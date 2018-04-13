@@ -22,6 +22,7 @@ public class ShopService {
     }
 
     public ShopUserMsg getShopByUser(String userId){
+        ShopUserMsg shopUserMsg= shopMapper.getShopByUser(userId);
         return shopMapper.getShopByUser(userId);
     }
     public void UpLoadImgByShopId(String shopId){

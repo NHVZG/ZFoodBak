@@ -8,9 +8,11 @@
     <result column="income" property="income" jdbcType="DOUBLE" />
     <result column="source" property="source" jdbcType="DOUBLE" />
     <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="ratecount" property="ratecount" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    courier_id, name, phone, income, source, state
+    courier_id, `name`, phone, income, `source`, `state`, ratecount, user_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -23,12 +25,12 @@
     where courier_id = #{courierId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.nhvzg.entity.Courier" >
-    insert into courier (courier_id, name, phone, 
-      income, source, state
-      )
+    insert into courier (courier_id, `name`, phone,
+      income, `source`, `state`,
+      ratecount, user_id)
     values (#{courierId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{income,jdbcType=DOUBLE}, #{source,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER}
-      )
+      #{income,jdbcType=DOUBLE}, #{source,jdbcType=DOUBLE}, #{state,jdbcType=INTEGER}, 
+      #{ratecount,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.nhvzg.entity.Courier" >
     insert into courier
@@ -37,7 +39,7 @@
         courier_id,
       </if>
       <if test="name != null" >
-        name,
+        `name`,
       </if>
       <if test="phone != null" >
         phone,
@@ -46,10 +48,16 @@
         income,
       </if>
       <if test="source != null" >
-        source,
+        `source`,
       </if>
       <if test="state != null" >
-        state,
+        `state`,
+      </if>
+      <if test="ratecount != null" >
+        ratecount,
+      </if>
+      <if test="userId != null" >
+        user_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -71,13 +79,19 @@
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
       </if>
+      <if test="ratecount != null" >
+        #{ratecount,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.nhvzg.entity.Courier" >
     update courier
     <set >
       <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
@@ -86,25 +100,60 @@
         income = #{income,jdbcType=DOUBLE},
       </if>
       <if test="source != null" >
-        source = #{source,jdbcType=DOUBLE},
+        `source` = #{source,jdbcType=DOUBLE},
       </if>
       <if test="state != null" >
-        state = #{state,jdbcType=INTEGER},
+        `state` = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="ratecount != null" >
+        ratecount = #{ratecount,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
       </if>
     </set>
     where courier_id = #{courierId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.nhvzg.entity.Courier" >
     update courier
-    set name = #{name,jdbcType=VARCHAR},
+    set `name` = #{name,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       income = #{income,jdbcType=DOUBLE},
-      source = #{source,jdbcType=DOUBLE},
-      state = #{state,jdbcType=INTEGER}
+      `source` = #{source,jdbcType=DOUBLE},
+      `state` = #{state,jdbcType=INTEGER},
+      ratecount = #{ratecount,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR}
     where courier_id = #{courierId,jdbcType=VARCHAR}
   </update>
 
   <select id="getAll" resultMap="BaseResultMap">
     select * from courier
   </select>
+
+  <resultMap id="CourierMsg" type="com.nhvzg.result.CourierUserMsg">
+    <result column="headImg" property="headImg" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="courier_id" property="courierId" jdbcType="VARCHAR" />
+    <result column="name" property="courierName" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="income" property="income" jdbcType="DOUBLE" />
+    <result column="source" property="score" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="ratecount" property="rateCount" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getCourierByUser" resultMap="CourierMsg">
+    select z.headImg,z.`name` as userName,z.`password`,c.* from zfooduser z INNER JOIN courier c on z.user_id=c.user_id
+    where z.user_id= #{userId,jdbcType=VARCHAR};
+  </select>
+
+  <update id="updateCourierBasicMsg" parameterType="com.nhvzg.result.CourierUserMsg">
+    update courier SET
+      `name` = #{courierName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
+    WHERE courier_id= #{courierId,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

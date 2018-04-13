@@ -231,6 +231,7 @@
     <result column="sendscore" property="sendscore" jdbcType="INTEGER" />
 
     <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+    <result column="shopAddress" property="shopAddress" jdbcType="VARCHAR" />
     <result column="headpic" property="headPic" jdbcType="VARCHAR" />
     <result column="couriername" property="courierName" jdbcType="VARCHAR" />
     <result column="comment" property="comment" jdbcType="VARCHAR" />
@@ -265,10 +266,10 @@
     select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right  join
     (select os.*,c.`name` as couriername from courier c
     right JOIN
-    (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and o.user_id=#{userId,jdbcType=VARCHAR}) os
+    (SELECT o.*,s.shopName,s.headPic from `order`o INNER JOIN shop s on o.shop_id=s.shop_id and o.user_id=#{userId,jdbcType=VARCHAR} and o.state!='5') os
     on c.courier_id=os.courier_id
     )cosh
-    on cosh.order_id=comy.order_id ORDER BY orderTime desc;
+    on cosh.order_id=comy.order_id ORDER BY `state` desc, `orderTime` desc;
   </select>
 
   <select id="getShopOrderCurrent" resultMap="OrderMsg" parameterType="java.lang.String">
@@ -362,6 +363,43 @@
       score=#{score,jdbcType=INTEGER},
       sendscore=#{sendscore,jdbcType=INTEGER}
     where order_id=#{orderId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getCourierReceiveOrder" resultMap="OrderMsg">
+    select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right join
+      (select os.*,c.`name` as couriername from courier c
+        right JOIN
+        (SELECT o.*,s.shopName,s.headPic,s.address as shopAddress from `order`o INNER JOIN shop s on o.shop_id=s.shop_id  and o.state='2') os
+          on c.courier_id=os.courier_id
+      )cosh
+        on cosh.order_id=comy.order_id ORDER BY cosh.state desc;
+  </select>
+
+  <select id="getCourierCurrentOrders" resultMap="OrderMsg" parameterType="java.lang.String">
+    select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right join
+      (
+        SELECT o.*,s.shopName,s.headPic,s.address as shopAddress from `order`o INNER JOIN shop s on o.shop_id=s.shop_id  and o.state='1' and o.courier_id=#{courierId,jdbcType=VARCHAR}
+      )cosh
+      on cosh.order_id=comy.order_id ORDER BY orderTime desc;
+  </select>
+
+  <select id="getCourierHistoryOrder" resultMap="OrderMsg" parameterType="java.lang.String">
+    select cosh.*,comy.`comment` from(select order_id,`comment` from `comment`)comy right join
+      (
+        SELECT o.*,s.shopName,s.headPic,s.address as shopAddress from `order`o INNER JOIN shop s on o.shop_id=s.shop_id  and o.state='0' and o.courier_id=#{courierId,jdbcType=VARCHAR}
+
+      )cosh
+        on cosh.order_id=comy.order_id ORDER BY orderTime desc;
+  </select>
+
+  <update id="updateShopIncome" parameterType="com.nhvzg.entity.Order">
+    update `shop` set income=income+#{price,jdbcType=DOUBLE}
+    where shop_id = #{shopId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateCourierIncome" parameterType="com.nhvzg.entity.Order">
+    update courier set income=income+#{sendprice,jdbcType=DOUBLE}
+    where courier_id = #{courierId,jdbcType=VARCHAR}
   </update>
   <!--
       select os.*,c.`name` as couriername from courier c

@@ -71,6 +71,12 @@ public class UserFavController {
         service.deleteFavFoodList(list);
     }
 
+    @PostMapping("/favFood/del")
+    @ResponseBody
+    //favFoodId
+    public void FavFoodDel(@RequestBody String json) throws IOException {
+        service.removeFavFood(JsonTools.GetObject(json,FavFood.class).getFavFoodId());
+    }
 
 
     @Deprecated
@@ -80,13 +86,8 @@ public class UserFavController {
     public void FavFoodAdd(@RequestBody String json) throws IOException {
         service.addFavFood(JsonTools.GetObject(json,FavFood.class));
     }
-    @Deprecated
-    @PostMapping("/favFood/del")
-    @ResponseBody
-    //favFoodId
-    public void FavFoodDel(@RequestBody String json) throws IOException {
-        service.removeFavFood(JsonTools.GetObject(json,FavFood.class).getFavFoodId());
-    }
+
+
 
 
 

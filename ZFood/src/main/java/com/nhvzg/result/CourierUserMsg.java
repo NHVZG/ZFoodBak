@@ -1,42 +1,35 @@
 package com.nhvzg.result;
 
 /**
- * Created by NHVZG on 2018/3/19.
+ * Created by NHVZG on 2018/4/12.
  */
-public class ShopUserMsg {
-    private String shopId;
-    private String shopName;
+public class CourierUserMsg {
+    private String courierId;
+    private String courierName;
     private String phone;
-    private String address;
     private Integer score;
     private String userId;
     private String headImg;
     private String userName;
     private Double income;
-    private Integer orderCount;
+    private Integer state;
+    private Integer rateCount;
+    private String password;
 
-    public Integer getOrderCount() {
-        return orderCount;
+    public String getCourierId() {
+        return courierId;
     }
 
-    public void  setOrderCount(int orderCount) {
-        this.orderCount = orderCount;
+    public void setCourierId(String courierId) {
+        this.courierId = courierId;
     }
 
-    public String getShopId() {
-        return shopId;
+    public String getCourierName() {
+        return courierName;
     }
 
-    public void setShopId(String shopId) {
-        this.shopId = shopId;
-    }
-
-    public String getShopName() {
-        return shopName;
-    }
-
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
+    public void setCourierName(String courierName) {
+        this.courierName = courierName;
     }
 
     public String getPhone() {
@@ -45,14 +38,6 @@ public class ShopUserMsg {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Integer getScore() {
@@ -93,5 +78,29 @@ public class ShopUserMsg {
 
     public void setIncome(Double income) {
         this.income = income;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public Integer getRateCount() {
+        return rateCount;
+    }
+
+    public void setRateCount(Integer rateCount) {
+        this.rateCount = rateCount;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

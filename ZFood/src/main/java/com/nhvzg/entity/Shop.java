@@ -17,6 +17,16 @@ public class Shop {
 
     private String headpic;
 
+    private Integer orderCount;
+
+    public Integer getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(Integer orderCount) {
+        this.orderCount = orderCount;
+    }
+
     public String getShopId() {
         return shopId;
     }

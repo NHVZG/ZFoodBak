@@ -220,8 +220,8 @@
     select * from food where shop_id=#{shopId,jdbcType=VARCHAR}
   </select>
 
-  <select id="getAllFoodwithShopAndUser" resultMap="ShortFoodMsg" parameterType="hashmap">
-    SELECT f.*,ff.fav_food_id  FROM
+  <!--
+      SELECT f.*,ff.fav_food_id  FROM
     (
 	    SELECT * FROM favfood WHERE user_id =#{userId,jdbcType=VARCHAR}
      ) ff
@@ -230,6 +230,19 @@
         SELECT * FROM food where shop_id=#{shopId,jdbcType=VARCHAR}
     )f
     ON f.food_id = ff.food_id;
+  -->
+
+  <select id="getAllFoodwithShopAndUser" resultMap="ShortFoodMsg" parameterType="hashmap">
+
+    SELECT f.*,ff.fav_food_id  FROM
+      (
+        SELECT * FROM food where shop_id=#{shopId,jdbcType=VARCHAR}
+      )f
+      LEFT JOIN
+      (
+        SELECT * FROM favfood WHERE user_id =#{userId,jdbcType=VARCHAR}
+      ) ff
+        ON f.food_id = ff.food_id;
   </select>
 
 </mapper>
