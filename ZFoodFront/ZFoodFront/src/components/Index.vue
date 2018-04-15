@@ -40,7 +40,16 @@
           <div class="hotContent5 test-num">5</div>
         </div>
       </div>
-
+    <scroll-bar>
+      <div><a href="#home"  class="scrollactive-item">Home</a></div><div class="dropdown-divider" style="margin: 0"></div>
+      <div><a href="#about-us"  class="scrollactive-item">About Us</a></div><div class="dropdown-divider" style="margin: 0"></div>
+      <div><a href="#portfolio"  class="scrollactive-item">Portfolio</a></div><div class="dropdown-divider" style="margin: 0"></div>
+      <div><a href="#contact"  class="scrollactive-item">Contact</a></div>
+    </scroll-bar>
+      <div id="home" style="height: 100em;background-color: white;"></div>
+      <div id="about-us" style="height: 100em;background-color: #8970a7;"></div>
+      <div id="portfolio" style="height: 100em;background-color: #fab5b5;"></div>
+      <div id="contact" style="height: 100em;background-color: greenyellow;"></div>
     </div>
 </template>
 
@@ -188,20 +197,32 @@
     text-align: center;
     font-size: 20px;
   }
-
+  .scrollactive-item{
+    width: 100%;
+    color: #c2c2c2;
+    display: block;
+    /*background-color: white;*/
+  }
+  .active-item{
+    color:#F68447;
+    display: block;
+    /*background-color: #F68447;*/
+  }
 </style>
 
 <script>
   import ZfoodHeader from '../components/Header.vue';
+  import ScrollBar from '../components/ScrollBar.vue';
     export default{
         data () {
             return {
                 msg: '这个是Home模板页',
+                active:'active'
             }
         },
-        components:{
-          ZfoodHeader
-        },
+      components:{
+        ScrollBar,ZfoodHeader
+      },
       mounted(){
       }
     }

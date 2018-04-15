@@ -11,9 +11,12 @@ import VueAxios from 'vue-axios'
 import './lib/bootstrap/css/bootstrap.css'
 import './lib/bootstrap/js/bootstrap.bundle'
 import './lib/bootstrap/js/bootstrap'
+import Scrollactive from 'vue-scrollactive';
 import $ from 'jquery'
-/*import rate from 'vue-rate';*/
 
+Vue.use(Scrollactive);
+
+/*import rate from 'vue-rate';*/
 /*Vue.use(rate);*/
 Vue.prototype.$http = axios;
 //Vue.prototype.$zajax=ZFoodAjax;

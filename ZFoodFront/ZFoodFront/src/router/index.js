@@ -2,15 +2,16 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
+import UserManage from '@/components/UserManage'
 import ShopManage from '@/components/ShopManage'
 import FoodTable from '@/components/FoodTable'
 import CouponTable from '@/components/CouponTable'
-import UserManage from '@/components/UserManage'
 import ShopIndex from '@/components/ShopIndex'
 import PayOff from '@/components/PayOff'
-import CourierManage from '@/components/CourierManage'
 import Header from '@/components/Header'
+import CourierManage from '@/components/CourierManage'
 import Index from '@/components/Index'
+import ScrollBar from '@/components/ScrollBar'
 import Test from '@/components/test'
 import OrderItem from '@/components/test/OrderItem'
 
@@ -86,6 +87,11 @@ export default new Router({
       path:'/CourierManage',
       name:'CourierManage',
       component:CourierManage
+    },
+    {
+      path:'/ScrollBar',
+      name:'ScrollBar',
+      component:ScrollBar
     }
   ]
 })
