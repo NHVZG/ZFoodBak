@@ -88,7 +88,6 @@ public class FoodController {
         foodService.deleteList(ids);
     }
 
-
     @PostMapping("/food/user")
     public Map getAllFood(@RequestBody String json,HttpServletRequest request) throws IOException {
         Map map=JsonTools.GetObject(json,Map.class);
@@ -101,4 +100,7 @@ public class FoodController {
         result.put("foodList",foodService.getAllFood((String)map.get("shopId"),(String) request.getAttribute("userId")));//食物列表
         return result;
     }
+
+    //@PostMapping("/food/index")//首頁信息
+    //public Map
 }

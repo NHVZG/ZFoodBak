@@ -3,7 +3,8 @@ package com.nhvzg.result;
 /**
  * Created by NHVZG on 2018/3/26.
  */
-public class FoodShortMsg {
+public class  FoodShortMsg {
+    private String shopId;
     private String foodId;
     private String name;
     private Double price;
@@ -11,6 +12,23 @@ public class FoodShortMsg {
     private Double packprice;
     private String pic;
     private String favFoodId;
+    private String shopName;
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
 
     public String getFavFoodId() {
         return favFoodId;

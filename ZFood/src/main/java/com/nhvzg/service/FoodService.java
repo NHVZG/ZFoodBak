@@ -2,6 +2,7 @@ package com.nhvzg.service;
 
 import com.nhvzg.dao.FoodMapper;
 import com.nhvzg.entity.Food;
+import com.nhvzg.result.FoodKindMsg;
 import com.nhvzg.result.FoodShortMsg;
 import com.nhvzg.tools.UUIDTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,12 @@ public class FoodService {
         return foodMapper.getAllFoodwithShopAndUser(map);
     }
 
+    //获取首页种类
+    public List<FoodKindMsg> getHotKindFood(){
+        return foodMapper.getKindsFood();
+    }
+    //获取首页随机食物
+    public List<FoodShortMsg>randomFoods(){return foodMapper.randomFoods();}
     @Deprecated
     public void removeFood(String fooId){
         foodMapper.deleteByPrimaryKey(fooId);

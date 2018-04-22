@@ -1,6 +1,7 @@
 package com.nhvzg.dao;
 
 import com.nhvzg.entity.Food;
+import com.nhvzg.result.FoodKindMsg;
 import com.nhvzg.result.FoodShortMsg;
 
 import java.util.List;
@@ -32,4 +33,8 @@ public interface FoodMapper {
     List<FoodShortMsg>getAllFoodShortMsg(String shopId);
 
     List<FoodShortMsg>getAllFoodwithShopAndUser(Map map);
+
+    List<FoodKindMsg>getKindsFood();
+
+    List<FoodShortMsg>randomFoods();
 }

@@ -208,6 +208,7 @@
   </update>
 
   <resultMap id="ShortFoodMsg" type="com.nhvzg.result.FoodShortMsg">
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
     <result column="food_id" property="foodId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DOUBLE" />
@@ -215,6 +216,7 @@
     <result column="packPrice" property="packprice" jdbcType="DOUBLE" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
     <result column="fav_food_id" property="favFoodId" jdbcType="VARCHAR" />
+    <result column="shopName" property="shopName" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getAllFoodShortMsg" resultMap="ShortFoodMsg">
     select * from food where shop_id=#{shopId,jdbcType=VARCHAR}
@@ -244,6 +246,33 @@
       ) ff
         ON f.food_id = ff.food_id;
   </select>
+
+<resultMap id="KindFood" type="com.nhvzg.result.FoodKindMsg">
+  <result column="kind" property="kind" jdbcType="VARCHAR" />
+  <collection column="kind" javaType="List"  ofType="com.nhvzg.result.FoodKindMsg$FoodsMsg"  property="foodList" select="selectTopTenKindFoods"/>
+</resultMap>
+
+  <resultMap id="FoodsMap" type="com.nhvzg.result.FoodKindMsg$FoodsMsg">
+    <id column="food_id" property="foodId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="name" property="foodName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectTopTenKindFoods" parameterType="java.lang.String" resultType="com.nhvzg.result.FoodKindMsg$FoodsMsg" resultMap="FoodsMap">
+  select f.food_id,f.shop_id,f.`name`,f.price,f.pic,s.shopName from food f
+    RIGHT JOIN shop s on s.shop_id=f.shop_id WHERE f.kind=#{kind,jdbcType=VARCHAR} limit 0,5;
+  </select>
+
+
+  <select id="getKindsFood" resultMap="KindFood">
+    select kind,count(kind) as num from food group by kind ORDER BY num desc limit 0,10;
+  </select>
+
+    <select id="randomFoods" resultMap="ShortFoodMsg">
+      select f.*,s.shopName from food f LEFT JOIN shop s on s.shop_id=f.shop_id where f.food_id like CONCAT('%',FLOOR(RAND()*(10+RAND()*10)),'%')limit 1,7;
+    </select>
 
 </mapper>
 <!--<foreach collection="list" item="item" index="index" separator=" " open="case food_id" close="end">
