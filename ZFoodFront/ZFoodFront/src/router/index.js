@@ -12,6 +12,7 @@ import Header from '@/components/Header'
 import CourierManage from '@/components/CourierManage'
 import Index from '@/components/Index'
 import ScrollBar from '@/components/ScrollBar'
+import Food from '@/components/Food'
 import Test from '@/components/test'
 import OrderItem from '@/components/test/OrderItem'
 
@@ -92,6 +93,11 @@ export default new Router({
       path:'/ScrollBar',
       name:'ScrollBar',
       component:ScrollBar
+    },
+    {
+      path:'/Food/:foodId',
+      name:'Food',
+      component:Food
     }
   ]
 })

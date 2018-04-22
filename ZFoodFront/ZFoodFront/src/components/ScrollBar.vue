@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="navBar">
+    <div><!--class="navBar"-->
       <scrollactive ref="scrollactive" class="my-nav" :activeClass="activeClass">
         <!--<div><a href="#home"  class="scrollactive-item">Home</a></div><div class="dropdown-divider" style="margin: 0"></div>
         <div><a href="#about-us"  class="scrollactive-item">About Us</a></div><div class="dropdown-divider" style="margin: 0"></div>
@@ -19,16 +19,7 @@
 </template>
 
 <style scoped>
-  .navBar{
-    font-size: 1.2rem;
-    position: fixed;
-    width: 5rem;
-    right: 2rem;
-    bottom: 4rem;
-    border-radius: 5px;
-    overflow: hidden;
-    text-align: center;
-  }
+
 </style>
 
 <script>

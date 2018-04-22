@@ -417,11 +417,13 @@
         }
       },
       mounted(){
-            this.$http.post('/zfood/shoppingCart',{headers: {"Content-Type": "application/json"}}).then(
+            this.$nextTick(function () {
+              this.$http.post('/zfood/shoppingCart',{headers: {"Content-Type": "application/json"}}).then(
                 response=>{
                   this.orderList=response.data;
                 }
-            );
+              );
+            });
             this.$http.post('/zfood/user/message',{headers: {"Content-Type": "application/json"}}).then(
               response=>{
                     this.userMsg=response.data;
