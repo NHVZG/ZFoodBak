@@ -4,10 +4,10 @@
 
       <!--搜索-->
       <div class="header" >
-        <form class="searchForm">
+        <div class="searchForm">
           <div id="formDiv" class="input-group" style="margin-top:0;position:relative;">
             <input id="searchBar" class="form-control" type="search" placeholder="Search" aria-label="Search"
-                   style="box-shadow:none;" v-model="findText"/>
+                   style="box-shadow:none;" v-model="findText" @keyup.13="Finding"/>
             <span class="input-group-btn">
 					<button
                   @click="Finding"
@@ -15,7 +15,7 @@
                   style="background-color:#F68447; border: solid #F68447; width: 80px">查找</button>
 				</span>
           </div>
-        </form>
+        </div>
       </div>
 
       <!--首页热门模块-->
@@ -25,8 +25,8 @@
           <div class="navContent">
             <p style="margin-left:1em;font-size: 1.5rem;">分类</p>
             <scroll-bar>
-            <ul>
-              <li v-for="(v,i) in kindList" style="list-style-type:none;" ><a :href="'#k'+i" style="color:white;text-decoration:none;" class="scrollactive-item">{{v.kind}}<span style="float: right;margin-right: 1em;"><img style="width: 10px;" src="/static/img/zfood/chevron-right-8x-w.png"/></span></a></li>
+            <ul style="padding: 0">
+              <li v-for="(v,i) in kindList" style="list-style-type:none;" class="kind-li"><a :href="'#k'+i" style="color:white;text-decoration:none;padding-left: 2em;" class="scrollactive-item">{{v.kind}}<span style="float: right;margin-right: 1em;"><img style="width: 10px;" src="/static/img/zfood/chevron-right-8x-w.png"/></span></a></li>
             </ul>
             </scroll-bar>
           </div>
@@ -38,6 +38,7 @@
           <div id="carouselExampleControls" class="carousel slide carouselBlock" data-ride="carousel">
             <div class="carousel-inner" >
               <div class="carousel-item active">
+                <a @click="ToFood(randomFoodList[0])">
                 <div style="position: relative;">
                   <div  class="carouselText"  style="top: 0;" v-if="randomFoodList[0]">{{randomFoodList[0].shopName}}</div>
                 <div class=" carouselCover">
@@ -49,9 +50,11 @@
                 </div>
                 <div class="carouselText"  style="bottom: 0;"  v-if="randomFoodList[0]">{{randomFoodList[0].name}}<span style="float: right;margin-right: 1em;">{{randomFoodList[0].price+'￥'}}</span></div>
                 </div>
+                </a>
               </div>
               <div class="carousel-item">
                 <div style="position: relative;">
+                  <a @click="ToFood(randomFoodList[1])">
                   <div  class="carouselText"  style="top: 0;" v-if="randomFoodList[1]">{{randomFoodList[1].shopName}}</div>
                 <div class=" carouselCover">
                   <div class="carouselImgBlock">
@@ -61,10 +64,12 @@
                   </div>
                 </div>
                 <div class="carouselText"   style="bottom: 0;" v-if="randomFoodList[1]">{{randomFoodList[1].name}}<span style="float: right;margin-right: 1em;">{{randomFoodList[1].price+'￥'}}</span></div>
+                  </a>
                 </div>
               </div>
               <div class="carousel-item">
                 <div style="position: relative;">
+                  <a @click="ToFood(randomFoodList[2])">
                   <div  class="carouselText"  style="top: 0;" v-if="randomFoodList[2]">{{randomFoodList[2].shopName}}</div>
                 <div class=" carouselCover">
                   <div class="carouselImgBlock">
@@ -74,6 +79,7 @@
                   </div>
                 </div>
                 <div class="carouselText"   style="bottom: 0;" v-if="randomFoodList[2]">{{randomFoodList[2].name}}<span style="float: right;margin-right: 1em;">{{randomFoodList[2].price+'￥'}}</span></div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -88,6 +94,7 @@
           </div>
 
           <div v-for="(v,i) in hotStaticList"  :class="v.styleClass" :style="'width:'+v.style" v-on:mouseenter="MouseHoverChange(i)" v-on:mouseleave="MouseHoverChange(i)">
+              <a @click='ToFood(v)'>
             <img v-if="v" :src="v.pic" >
             <div class="imgFrame"><div class="imgFrameBorder"></div></div>
 
@@ -96,6 +103,7 @@
                 <div class="blockDetails" >菜名:{{v.name}}<br>价格:{{v.price}}￥<br>店名:{{v.shopName}}</div>
               </div>
             </transition>
+            </a>
           </div>
 
           </div>
@@ -110,11 +118,11 @@
     </scroll-bar>
 
       <div v-for="(c,i) in kindList" :id="'k'+i" class="kindImgBlock">
-        <div style="background-color:#F68447;color: white;font-size: 1.5em;padding-left: 1.5em;border-radius: 6px 6px 0 0;">{{c.kind}}<span style="float: right;font-size: 0.5em;margin-top: 0.5em;margin-right: 1em;"><a>查看更多</a></span></div><!--指定宽度才能生效margin inlineBlock指定无效-->
+        <div style="background-color:#F68447;color: white;font-size: 1.5em;padding-left: 1.5em;border-radius: 6px 6px 0 0;">{{c.kind}}<span style="float: right;font-size: 0.5em;margin-top: 0.5em;margin-right: 1em;"><a @click="FindingKind(c.kind)" style="cursor: pointer;">查看更多</a></span></div><!--指定宽度才能生效margin inlineBlock指定无效-->
         <div>
           <div style="width: 65em;margin: 0 auto;">
-          <div class="foodBlock" v-for="(f,i) in c.foodList">
-            <a :href="'/Food/'+f.foodId" style="text-decoration:none;">
+          <div class="foodBlock" v-for="(f,ii) in c.foodList">
+            <a @click='ToFood(f)' style="text-decoration:none;">
             <div>
             <div class="foodImgBlock">
               <img class="foodImg" :src="f.pic===null?'/static/img/zfood/logo-gray-square.jpg':f.pic">
@@ -153,7 +161,7 @@
     margin-left: 1em;
     margin-top: 1em;
     display: inline-block;
-    background-color: #f9f9f9;
+    background-color: #eeeeee;
     box-shadow: 0 0 8px #f9f9f9;
     vertical-align: text-top;
   }
@@ -216,6 +224,9 @@
     float:left;
 
     background-color: #F68447;
+  }
+  .kind-li:hover{
+    background-color: rgba(255, 255, 255,0.2);
   }
   .scrollBarBlock{
     font-size: 1.2rem;
@@ -376,8 +387,41 @@
         ScrollBar,ZfoodHeader
       },
       methods:{
-        Finding(){
-
+        Finding(e){
+          this.$router.push({
+            name: 'Search',
+            params: {
+                searchText:this.findText
+            }
+          });
+        },
+        FindingKind(kind){
+          this.$router.push(
+            {
+              name: 'Search',
+              params:{
+                kind:kind
+              }
+            });
+        },
+        ToFood(food){
+          this.$router.push(
+            {
+              name: 'Food',
+              params:{
+                foodId: food['foodId']
+              }
+            /*  params: {
+                foodId: food['foodId'],
+                foodName: food['foodName'],
+                foodImg:food['pic'],
+                price:food['price'],
+                score:food['score'],
+                shopId:food['shopId'],
+                shopName:food['shopName'],
+                packPrice:food['packprice']
+              }*/
+            });
         },
         MouseHoverChange(index){
           //this.$set(this.showList,index,!this.showList[index]);

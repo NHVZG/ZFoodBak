@@ -2,7 +2,7 @@
   <div style="padding-bottom: 2em;">
     <!--头部栏-->
     <div class="header">
-      <a href=""><img class="logo" src="/static/img/zfood/logo.jpg" alt="" ></a><!--动态路由参数需要以/开始-->
+      <a href="/Index"><img class="logo" src="/static/img/zfood/logo.jpg" alt="" ></a><!--动态路由参数需要以/开始-->
       <div class="headerRightButton">
 
 
@@ -119,7 +119,7 @@
             </div>-->
           </div>
           <div class="foodImgBlock">
-            <img class="foodImg" :src="v.pic===null?'/static/img/zfood/logo-gray-square.jpg':v.pic">
+            <a :href="'/Food/'+v.foodId"><img class="foodImg" :src="v.pic===null?'/static/img/zfood/logo-gray-square.jpg':v.pic"></a>
           </div>
           <p class="foodDetails">{{v.name}}</p>
           <p style="color: salmon;text-align: center;margin: 0;font-weight: 500;font-size: 0.7em;">{{v.price}}￥</p>
@@ -403,11 +403,11 @@
       });
       if(foodsAdd.length>0) {
         let addData = JSON.stringify(foodsAdd);
-        this.$http.post('zfood/favFood/add/list',addData,{headers: {"Content-Type": "application/json"}});
+        this.$http.post('/zfood/favFood/add/list',addData,{headers: {"Content-Type": "application/json"}});
       }
       if(foodsDel.length>0) {
         let delData = JSON.stringify(foodsDel);
-        this.$http.post('zfood/favFood/del/list', delData, {headers: {"Content-Type": "application/json"}});
+        this.$http.post('/zfood/favFood/del/list', delData, {headers: {"Content-Type": "application/json"}});
       }
       //领取券单
       let couponAdd=[];

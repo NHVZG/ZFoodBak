@@ -34,7 +34,7 @@
       <div class="regist">
         <div class="block">
           <div style="width: 250px;margin: 0 auto;">
-            <img class="logo" src="static/img/zfood/logo.jpg" alt="">
+            <img class="logo" src="/static/img/zfood/logo.jpg" alt="">
           </div>
           <form>
             <div name="formDiv">

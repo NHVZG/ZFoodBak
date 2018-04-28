@@ -132,8 +132,8 @@
                     </span>
 
                   </span>
-                  <span style="margin-left: 30px;">总额:{{v.price}}</span>
-                  <div style="display:inline-block;margin-left: 30px;max-width:160px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;vertical-align: text-top;">备注:{{v.remark}}</div>
+                  <span style="margin-left: 30px;">总额:{{v.price-v.sendprice}}</span>
+                  <div style="display:inline-block;margin-left: 30px;max-width:160px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;vertical-align: text-top;" v-if="v.remark  ">备注:{{v.remark}}</div>
                 </div>
               </div>
               <div :id="v.orderId" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
@@ -169,8 +169,8 @@
                     </span>
 
                   </span>
-                  <span style="margin-left: 30px;">总额:{{v.price}}</span>
-                  <span style="margin-left: 30px;">备注:{{v.remark}}</span>
+                  <span style="margin-left: 30px;">总额:{{v.price-v.sendprice}}</span>
+                  <span style="display:inline-block;margin-left: 30px;max-width:160px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;vertical-align: text-top;" v-if="v.remark">备注:{{v.remark}}</span>
                 </div>
               </div>
               <div :id="v.orderId" class="collapse" aria-labelledby="headingOne" data-parent="#accordion1">

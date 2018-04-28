@@ -13,6 +13,7 @@ import CourierManage from '@/components/CourierManage'
 import Index from '@/components/Index'
 import ScrollBar from '@/components/ScrollBar'
 import Food from '@/components/Food'
+import Search from '@/components/Search'
 import Test from '@/components/test'
 import OrderItem from '@/components/test/OrderItem'
 
@@ -23,8 +24,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      redirect:'/Index',
+     /* name: 'HelloWorld',
+      component: HelloWorld*/
     },
     {
       path:'/login',
@@ -98,6 +100,11 @@ export default new Router({
       path:'/Food/:foodId',
       name:'Food',
       component:Food
+    },
+    {
+      path:'/Search',
+      name:'Search',
+      component:Search
     }
   ]
 })

@@ -403,7 +403,7 @@
             }
           }
           this.orderList[this.currentOrderIndex]['sendprice']=this.sendPrice;
-          this.orderList[this.currentOrderIndex]['price']=this.amount;
+          this.orderList[this.currentOrderIndex]['price']=this.amount+this.packPrice+this.sendPrice;
           this.orderList[this.currentOrderIndex]['preferential']=this.preferential;
           this.orderList[this.currentOrderIndex]['orderTime']=new Date();
           this.orderList[this.currentOrderIndex]['receiverName']=this.userMsg['name'];

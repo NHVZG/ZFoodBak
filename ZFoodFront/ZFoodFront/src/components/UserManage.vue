@@ -70,7 +70,6 @@
 
               <div>
                 <div style="font-size: 0.5em;margin-left: 2em;color: gray;">订单号:{{v.orderId}}</div>
-                <div>{{i}}</div>
                 <div class="margin-left-2" style="font-size: 1em;position: absolute;bottom: 10px;">
                   总计：<span style="color: red;padding-right: 10px;">{{v.price}}￥</span>
                 <span class="" style="font-size: 1em;float: right;margin-right: 5px;padding-left: 20px;">下单时间:{{v.orderTime}}</span>
@@ -113,10 +112,10 @@
                       {{msg.phone}}<br>
                       {{GetOrderState(msg.state)}}<br>
                       <div v-if="msg.courierName!==null">{{msg.courierName}}</div>
-                      {{msg.remark}}
+                      {{msg.remark}}<br>
                       <div v-for="(s,f) in msg.orderItems" style="color:#F68447;">
                         <div style="display: inline-block;margin-right: 10px;min-width: 80px;">{{s.foodname}}</div>
-                        <div style="display: inline-block;margin-right: 10px;min-width: 80px;"><span>{{s.unitprice}}￥</span></div>
+                        <div style="display: inline-block;margin-right: 10px;min-width: 80px;"><span>{{s.unitprice}}￥+{{s.packprice===null?0:s.packprice}}￥</span></div>
                         <div style="display: inline-block;">&times;{{s.num}}份</div>
                       </div>
                     </div>
@@ -124,6 +123,7 @@
                   <div style="margin-top: 20px;">
                     <div style="display: inline-block;margin-right: 20px;">
                       优惠:<br>
+                      配送:<br>
                       付款:<br>
                       <div style="height: 40px;padding:10px 0;"  v-if="OrderCommentState(msg.state)">评分:</div>
                       <div style="height: 40px;padding:8px 0 10px;"  v-if="OrderCommentState(msg.state)">配送评分:</div>
@@ -131,6 +131,7 @@
                     </div>
                     <div style="display: inline-block;vertical-align: top;">
                       <span style="color:#d2c9c9;">{{msg.preferential===null?0:msg.preferential}}￥<br></span>
+                      <span style="color:#d2c9c9;">{{msg.sendprice}}￥<br></span>
                       <span style="color:#F68447;">{{msg.price-msg.preferential}}￥<br></span>
                     <!--  <div  v-if="OrderCommentState(msg.state)"><div style="display: inline-block;margin-left: -10px;"><rate :rate="msg.score" :over="msg.score" :length="5"  v-model="msg.score" :readonly="StarRateState(msg.score)"></rate></div></div>
                       <div  v-if="OrderCommentState(msg.state)"><div style="display: inline-block;margin-left: -10px;"><rate :rate="msg.sendscore" :over="msg.sendscore" :length="5" v-model="msg.sendscore" :readonly="StarRateState(msg.sendscore)"></rate></div></div>
@@ -173,10 +174,16 @@
 
         <div class="tab-pane fade" id="favorite">
 
-          <div style="min-height: 32em;background-color: white; padding-bottom: 30px;margin-bottom: 20px;">
+          <div style="min-height: 32em;background-color: white; padding-bottom: 30px;margin-bottom: 20px;position: relative;">
           <div>
-          <div style="background-color: #F68447; width: 150px;color: white;margin-left: 20px;text-align: center;border-radius: 6px 6px 0  0;margin-top: 50px;">收藏商家</div>
-           <div style="background-color: #F68447;margin-left:20px;margin-right:20px;height: 3px; border-radius: 6px;"></div>
+          <!--<div style="background-color: #F68447; width: 150px;color: white;margin-left: 20px;text-align: center;border-radius: 6px 6px 0  0;margin-top: 50px;">收藏商家</div>
+           <div style="background-color: #F68447;margin-left:20px;margin-right:20px;height: 3px; border-radius: 6px;"></div>-->
+            <div style="letter-spacing:-5px;position: absolute;z-index: 999;margin-left: -1em;margin-top: 0;margin-bottom: 0.5em;">
+              <div class="arrow-tail"></div>
+              <div class="arrow-middle">商店</div>
+              <div class="arrow"></div>
+            </div>
+            <div style="height: 2em;margin-top: 1em;margin-bottom: 0.5em;"></div>
 
           <div style="display: inline-block;margin-bottom: 20px;" v-for="(v,i) in favShops" @click="ToShop(v.shopId)">
             <div style="text-align: center; overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
@@ -191,13 +198,20 @@
                 </div>
               </div>
             </div>
-            <div>{{v.favShopName}}</div>
+            <div style="word-wrap: break-word; width:150px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">{{v.favShopName}}</div>
             </div>
           </div>
-
-          <div style="background-color: #F68447; width: 150px;color: white;margin-left: 20px;text-align: center;border-radius: 6px 6px 0  0">收藏食品</div>
-          <div style="background-color: #F68447;margin-left:20px;margin-right:20px;height: 3px; border-radius: 6px;"></div>
-          <div style="display: inline-block;margin-bottom: 20px;" v-for="(v,i) in favFoods" @click="ToShop(v.shopId)">
+            <div style="background-color: #f2f1f0;height: 1.5em;margin-top: 1.5em;"></div>
+          <!--<div style="background-color: #F68447; width: 150px;color: white;margin-left: 20px;text-align: center;border-radius: 6px 6px 0  0">收藏食品</div>
+          <div style="background-color: #F68447;margin-left:20px;margin-right:20px;height: 3px; border-radius: 6px;"></div>-->
+            <div style="position: relative;">
+              <div style="letter-spacing:-5px;position: absolute;z-index: 999;margin-left: -1em;margin-top: 0;margin-bottom: 0.5em;">
+                <div class="arrow-tail"></div>
+                <div class="arrow-middle">商店</div>
+                <div class="arrow"></div>
+              </div>
+              <div style="height: 2em;margin-top: 1em;margin-bottom: 0.5em;"></div>
+          <div style="display: inline-block;margin-bottom: 20px;" v-for="(v,i) in favFoods" @click="ToFood(v)">
             <div style="text-align: center; overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
               <div class="imgBox">
                 <div class="imgCover">
@@ -210,10 +224,11 @@
                   </div>
                 </div>
               </div>
-              <div>{{v.foodName}}</div>
+              <div style="word-wrap: break-word; width:150px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">{{v.foodName}}</div>
             </div>
+          </div></div>
+
           </div>
-        </div>
           </div>
         </div>
 
@@ -224,6 +239,38 @@
 </template>
 
 <style scoped>
+
+  .arrow-tail{
+    vertical-align: top;
+    width: 0;
+    height: 0;
+    background-color: transparent;
+    border-top: 1em solid #F68447;
+    border-left: 0.5em solid transparent;
+    border-bottom: 1em solid #F68447;
+    display: inline-block;
+  }
+  .arrow-middle{
+    height: 2em;
+    width: 4em;
+    background-color: #F68447;
+    color: white;
+    display: inline-block;
+    vertical-align: top;
+    letter-spacing:0;
+    text-align:center;
+    padding-top: 0.2em;
+  }
+  .arrow{
+    width: 0;
+    height: 0;
+    background-color: transparent;
+    border-top: 1em solid transparent;
+    border-left: 0.5em solid #F68447;
+    border-bottom: 1em solid transparent;
+    display: inline-block;
+  }
+
   .header{
     height: 3em;
     background-color: white;
@@ -454,6 +501,15 @@
         },
         ToShop(shopId){
             this.$goRoute('/ShopIndex/'+shopId);
+        },
+        ToFood(food){
+          this.$router.push(
+            {
+              name: 'Food',
+              params:{
+                foodId: food['foodId']
+              }
+            });
         },
         SaveOrder(){
           this.saveType=true
