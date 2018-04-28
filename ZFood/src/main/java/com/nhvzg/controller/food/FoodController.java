@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.nhvzg.entity.FavShop;
 import com.nhvzg.entity.Food;
 import com.nhvzg.result.FoodShortMsg;
+import com.nhvzg.result.UserCouponMsg;
 import com.nhvzg.service.FavService;
 import com.nhvzg.service.FoodService;
 import com.nhvzg.tools.JsonTools;
@@ -101,6 +102,15 @@ public class FoodController {
         return result;
     }
 
+    @PostMapping("/food/user/one")
+    public FoodShortMsg getOnefood(@RequestBody String json,HttpServletRequest request) throws IOException {
+        return foodService.getOneFood(json,(String) request.getAttribute("userId"));
+    }
+
+    @PostMapping("/singleFood/coupon")
+    public List<UserCouponMsg> getFoodCoupons(@RequestBody String json,HttpServletRequest request){
+        return foodService.getFoodCoupons(json,(String) request.getAttribute("userId"));
+    }
     //@PostMapping("/food/index")//Ê×í“ÐÅÏ¢
     //public Map
 }

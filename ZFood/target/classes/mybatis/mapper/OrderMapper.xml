@@ -338,8 +338,8 @@
 
   <update id="updateOrderPrice" parameterType="java.lang.String">
     update `order` set price=(
-    select SUM(oio.price) as sumPrice from(
-    select oi.unitPrice*oi.num as price from `order` o RIGHT JOIN `orderitem` oi on o.order_id=oi.order_id WHERE o.order_id=#{orderId,jdbcType=VARCHAR}
+    select SUM(oio.price)+#{sendPrice,jdbcType=DOUBLE}as sumPrice from(
+    select oi.unitPrice*oi.num+if(isnull(oi.packPrice),0,oi.packPrice) as price from `order` o RIGHT JOIN `orderitem` oi on o.order_id=oi.order_id WHERE o.order_id=#{orderId,jdbcType=VARCHAR}
     )oio
     ) WHERE order_id=#{orderId,jdbcType=VARCHAR}
   </update>
@@ -401,6 +401,8 @@
     update courier set income=income+#{sendprice,jdbcType=DOUBLE}
     where courier_id = #{courierId,jdbcType=VARCHAR}
   </update>
+
+
   <!--
       select os.*,c.`name` as couriername from courier c
           INNER JOIN

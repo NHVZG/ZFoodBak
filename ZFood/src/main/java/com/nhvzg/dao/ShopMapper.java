@@ -4,6 +4,8 @@ import com.nhvzg.entity.Shop;
 import com.nhvzg.result.OrderMessage;
 import com.nhvzg.result.ShopUserMsg;
 
+import java.util.List;
+
 public interface ShopMapper {
     int deleteByPrimaryKey(String shopId);
 
@@ -22,4 +24,6 @@ public interface ShopMapper {
     int updateHeadImg(Shop shop);
 
     void updateScore(OrderMessage msg);
+
+    List<Shop> queryShops(String queryText);
 }

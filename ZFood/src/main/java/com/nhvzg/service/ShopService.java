@@ -6,6 +6,8 @@ import com.nhvzg.result.ShopUserMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by NHVZG on 2018/2/27.
  */
@@ -43,6 +45,10 @@ public class ShopService {
         s.setUserId(shop.getUserId());
         s.setScore(shop.getScore());
         shopMapper.updateByPrimaryKey(s);
+    }
+
+    public List<Shop> queryShops(String queryText){
+        return shopMapper.queryShops(queryText);
     }
 
     @Deprecated

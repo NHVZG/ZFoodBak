@@ -40,7 +40,7 @@ public interface OrderMapper {
 
     void addOrderItem(List list);
 
-    void updateOrderPrice(String orderId);
+    void updateOrderPrice(Map map);
 
     void commitOrderState(OrderMessage order);
 

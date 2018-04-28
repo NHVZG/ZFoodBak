@@ -214,9 +214,11 @@
     <result column="price" property="price" jdbcType="DOUBLE" />
     <result column="sendPrice" property="sendprice" jdbcType="DOUBLE" />
     <result column="packPrice" property="packprice" jdbcType="DOUBLE" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
     <result column="fav_food_id" property="favFoodId" jdbcType="VARCHAR" />
     <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+    <result column="kind" property="kind" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getAllFoodShortMsg" resultMap="ShortFoodMsg">
     select * from food where shop_id=#{shopId,jdbcType=VARCHAR}
@@ -246,6 +248,41 @@
       ) ff
         ON f.food_id = ff.food_id;
   </select>
+  
+  <select id="getOneFoodWithUser" resultMap="ShortFoodMsg" parameterType="hashmap">
+    SELECT f.*,ff.fav_food_id  FROM
+      (SELECT fo.*,s.shopName FROM food fo  LEFT JOIN shop s on fo.shop_id=s.shop_id where food_id=#{foodId,jdbcType=VARCHAR})f
+      LEFT JOIN
+      (SELECT * FROM favfood WHERE user_id =#{userId,jdbcType=VARCHAR}) ff
+        ON f.food_id = ff.food_id;
+  </select>
+
+  <select id="getFoodCoupons" resultMap="CouponMsg" parameterType="hashmap">
+    select c.*,ci.user_id from
+      (select * from coupon where extra=#{foodId,jdbcType=VARCHAR} and `usage`=0) c
+      left join
+      (select * from couponitem where user_id=#{userId,jdbcType=VARCHAR})ci
+        on c.coupon_id=ci.couponId;
+  </select>
+  <resultMap id="CouponMsg" type="com.nhvzg.result.ShopCouponMsg">
+    <result column="coupon_id" property="couponId" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="startTime" property="starttime" jdbcType="VARCHAR" />
+    <result column="endTime" property="endtime" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="DOUBLE" />
+    <result column="percent" property="percent" jdbcType="INTEGER" />
+    <result column="usage" property="usage" jdbcType="INTEGER" />
+    <result column="condition" property="condition" jdbcType="VARCHAR" />
+    <result column="extra" property="extra" jdbcType="VARCHAR" />
+    <result column="foodName" property="foodName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+
+
 
 <resultMap id="KindFood" type="com.nhvzg.result.FoodKindMsg">
   <result column="kind" property="kind" jdbcType="VARCHAR" />
@@ -258,6 +295,9 @@
     <result column="name" property="foodName" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DOUBLE" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="sendPrice" property="sendprice" jdbcType="VARCHAR" />
+    <result column="packPrice" property="packprice" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
   </resultMap>
 
   <select id="selectTopTenKindFoods" parameterType="java.lang.String" resultType="com.nhvzg.result.FoodKindMsg$FoodsMsg" resultMap="FoodsMap">
@@ -273,6 +313,30 @@
     <select id="randomFoods" resultMap="ShortFoodMsg">
       select f.*,s.shopName from food f LEFT JOIN shop s on s.shop_id=f.shop_id where f.food_id like CONCAT('%',FLOOR(RAND()*(10+RAND()*10)),'%')limit 1,7;
     </select>
+
+    <update id="updateFoodScore" parameterType="java.lang.String">
+      update food f,
+        (
+          select food_id ,num from orderitem where order_id=#{orderId,jdbcType=VARCHAR}
+        )oi
+      set f.score=if(isnull(f.score),0,f.score)+oi.num
+      where oi.food_id=f.food_id
+    </update>
+
+
+  <select id="queryFoods" resultMap="ShortFoodMsg" parameterType="java.lang.String">
+    select f.*,s.shopName from(
+     select * from food  where kind like CONCAT('%',#{queryText,jdbcType=VARCHAR},'%' ) OR `name` like CONCAT('%',#{queryText,jdbcType=VARCHAR},'%')
+    )f
+      LEFT JOIN shop s on s.shop_id=f.shop_id;
+  </select>
+
+  <select id="queryFoodsKind" resultMap="ShortFoodMsg" parameterType="java.lang.String">
+    select f.*,s.shopName from(
+                                select * from food  where kind =#{queryText,jdbcType=VARCHAR}
+                              )f
+      LEFT JOIN shop s on s.shop_id=f.shop_id;
+  </select>
 
 </mapper>
 <!--<foreach collection="list" item="item" index="index" separator=" " open="case food_id" close="end">

@@ -15,6 +15,33 @@ public class FoodKindMsg{
        private String shopId;
        private Double price;
        private String pic;
+       private Double sendprice;
+       private Double packprice;
+       private Integer score;
+
+        public Double getPackprice() {
+            return packprice;
+        }
+
+        public void setPackprice(Double packprice) {
+            this.packprice = packprice;
+        }
+
+        public Double getSendprice() {
+            return sendprice;
+        }
+
+        public void setSendprice(Double sendprice) {
+            this.sendprice = sendprice;
+        }
+
+        public Integer getScore() {
+            return score;
+        }
+
+        public void setScore(Integer score) {
+            this.score = score;
+        }
 
         public String getFoodName() {
             return foodName;

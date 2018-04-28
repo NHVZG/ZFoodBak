@@ -46,9 +46,10 @@ public class FavService {
     }
 
 
-    public void addFavFoodsList(List list){
+    public void addFavFoodsList(List list,String userId){
         for(int i=0;i<list.size();i++){
             ((FavFood)list.get(i)).setFavFoodId(UUIDTools.getPrimaryKey());
+            ((FavFood)list.get(i)).setUserId(userId);
         }
         foodMapper.addFavFoodsList(list);
     }
@@ -60,10 +61,15 @@ public class FavService {
         foodMapper.deleteByPrimaryKey(favFoodId);
     }
 
-    @Deprecated
-    public void addFavFood(FavFood food){
-        food.setFavFoodId(UUIDTools.getPrimaryKey());
+
+    public String addFavFood(String foodId ,String userId){
+        String uuid=UUIDTools.getPrimaryKey();
+        FavFood food=new FavFood();
+        food.setFavFoodId(uuid);
+        food.setFoodId(foodId);
+        food.setUserId(userId);
         foodMapper.insert(food);
+        return uuid;
     }
 
 

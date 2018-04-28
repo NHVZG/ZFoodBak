@@ -177,4 +177,7 @@
     WHERE shop_id=#{shopId,jdbcType=VARCHAR}
   </update>
 
+  <select id="queryShops" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from shop where shopName LIKE concat('%',#{queryText,jdbcType=VARCHAR},'%')
+  </select>
 </mapper>

@@ -1,9 +1,6 @@
 package com.nhvzg.service;
 
-import com.nhvzg.dao.CommentMapper;
-import com.nhvzg.dao.OrderItemMapper;
-import com.nhvzg.dao.OrderMapper;
-import com.nhvzg.dao.ShopMapper;
+import com.nhvzg.dao.*;
 import com.nhvzg.entity.Comment;
 import com.nhvzg.entity.Order;
 import com.nhvzg.entity.OrderItem;
@@ -30,6 +27,8 @@ public class OrderService {
     private CommentMapper commentMapper;
     @Autowired
     private ShopMapper shopMapper;
+    @Autowired
+    private FoodMapper foodMapper;
 
     public List<OrderMessage>getShoppingCart(String userId){
         return orderMapper.getShoppingCart(userId);
@@ -66,7 +65,10 @@ public class OrderService {
                 orderMapper.updateOrderItemNum(updateList);
             if(addList.size()>0)
                 orderMapper.addOrderItem(addList);
-            orderMapper.updateOrderPrice(list.get(0).getOrderId());//更新订单的总额
+            Map map1=new HashMap();
+            map1.put("orderId",list.get(0).getOrderId());
+            map1.put("sendPrice",list.get(0).getSendprice());
+            orderMapper.updateOrderPrice(map1);//更新订单的总额
         }
         else{//新增的订单
             String orderId=UUIDTools.getPrimaryKey();
@@ -77,7 +79,8 @@ public class OrderService {
             order.setState("5");
             double sum=0;
             for (OrderItem item : items) {
-                sum = item.getNum() * item.getUnitprice() + sum;
+                double packPrice=item.getPackprice()==null?0:item.getPackprice();
+                sum = item.getNum() * item.getUnitprice() +packPrice+ sum;
                 item.setOrderId(orderId);
                 item.setOrderItemId(UUIDTools.getPrimaryKey());
             }
@@ -183,6 +186,12 @@ public class OrderService {
         orderMapper.updateShopIncome(order);
         orderMapper.updateCourierIncome(order);
     }
+
+    //修改食物的成交量
+    public void updateFoodScore(String orderId){
+        foodMapper.updateFoodScore(orderId);
+    }
+
 
     @Deprecated
     public void addOrder(Order order){

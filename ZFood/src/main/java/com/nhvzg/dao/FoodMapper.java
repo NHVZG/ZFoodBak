@@ -3,6 +3,7 @@ package com.nhvzg.dao;
 import com.nhvzg.entity.Food;
 import com.nhvzg.result.FoodKindMsg;
 import com.nhvzg.result.FoodShortMsg;
+import com.nhvzg.result.UserCouponMsg;
 
 import java.util.List;
 import java.util.Map;
@@ -37,4 +38,14 @@ public interface FoodMapper {
     List<FoodKindMsg>getKindsFood();
 
     List<FoodShortMsg>randomFoods();
+
+    int updateFoodScore(String orderId);
+
+    FoodShortMsg getOneFoodWithUser(Map map);
+
+    List<UserCouponMsg>getFoodCoupons(Map map);
+
+    List<FoodShortMsg> queryFoods(String queryText);
+
+    List<FoodShortMsg>queryFoodsKind(String queryText);
 }

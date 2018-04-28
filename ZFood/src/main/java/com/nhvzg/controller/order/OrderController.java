@@ -114,8 +114,9 @@ public class OrderController {
     @PostMapping("/order/complete")//完成订单
     public void completeOrder(@RequestBody String json) throws IOException {
         Order order=JsonTools.GetObject(json,Order.class);
-        orderService.editOrderState(order);
-        orderService.updateAllIncome(order);
+        orderService.editOrderState(order);//更新订单装阿嚏
+        orderService.updateAllIncome(order);//更新商家和配送员的收入
+        orderService.updateFoodScore(order.getOrderId());
     }
 
     @PostMapping("/order/edit/state")

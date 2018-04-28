@@ -60,10 +60,9 @@ public class UserFavController {
         return service.getAllFavFood((String) request.getAttribute("userId"));
     }
     @PostMapping("/favFood/add/list")
-    public void AddFavFoodList(@RequestBody String json) throws IOException {
+    public void AddFavFoodList(@RequestBody String json,HttpServletRequest request) throws IOException {
         List list=JsonTools.GetList(json,FavFood.class);
-        System.out.println(list);
-        service.addFavFoodsList(list);
+        service.addFavFoodsList(list, (String) request.getAttribute("userId"));
     }
     @PostMapping("/favFood/del/list")
     public void DelFavFoodList(@RequestBody String json) throws IOException {
@@ -79,12 +78,10 @@ public class UserFavController {
     }
 
 
-    @Deprecated
-    @PostMapping("/favFood/add")
-    @ResponseBody
+    @PostMapping("/favFood/add/one")
     //userId foodId
-    public void FavFoodAdd(@RequestBody String json) throws IOException {
-        service.addFavFood(JsonTools.GetObject(json,FavFood.class));
+    public String FavFoodAdd(@RequestBody String json,HttpServletRequest request) throws IOException {
+        return service.addFavFood(json,(String)request.getAttribute("userId"));
     }
 
 

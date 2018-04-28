@@ -4,6 +4,7 @@ import com.nhvzg.dao.FoodMapper;
 import com.nhvzg.entity.Food;
 import com.nhvzg.result.FoodKindMsg;
 import com.nhvzg.result.FoodShortMsg;
+import com.nhvzg.result.UserCouponMsg;
 import com.nhvzg.tools.UUIDTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,29 @@ public class FoodService {
         map.put("shopId",shopId);
         map.put("userId",userId);
         return foodMapper.getAllFoodwithShopAndUser(map);
+    }
+
+    //获取单个食物信息
+    public FoodShortMsg getOneFood(String foodId,String userId){
+        Map map=new HashMap();
+        map.put("foodId",foodId);
+        map.put("userId",userId);
+        return foodMapper.getOneFoodWithUser(map);
+    }
+    public List<UserCouponMsg>getFoodCoupons(String foodId,String userId){
+        Map map=new HashMap();
+        map.put("foodId",foodId);
+        map.put("userId",userId);
+        return foodMapper.getFoodCoupons(map);
+    }
+
+    //查找
+    public List<FoodShortMsg> queryFoods(String queryText){
+        return foodMapper.queryFoods(queryText);
+    }
+
+    public List<FoodShortMsg> queryFoodsKind(String queryText){
+        return foodMapper.queryFoodsKind(queryText);
     }
 
     //获取首页种类

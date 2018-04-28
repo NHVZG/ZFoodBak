@@ -13,6 +13,24 @@ public class  FoodShortMsg {
     private String pic;
     private String favFoodId;
     private String shopName;
+    private Integer score;
+    private String kind;
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
 
     public String getShopName() {
         return shopName;
